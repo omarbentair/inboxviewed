@@ -1,3 +1,9 @@
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -55,6 +61,8 @@ a {
 .navbar {
   position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   padding: 18px 8%;
   display: flex;
@@ -416,11 +424,11 @@ h2 {
 }
 
 .slide-left {
-  transform: translateX(-70px);
+  transform: translateX(-30px);
 }
 
 .slide-right {
-  transform: translateX(70px);
+  transform: translateX(30px);
 }
 
 .slide-left.active,
@@ -477,6 +485,19 @@ h2 {
   .post-showcase {
     grid-template-columns: 1fr;
   }
+
+  .hero {
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero-visual {
+  width: 100%;
+}
+
+.hero-image-slider {
+  max-width: 100%;
+}
 }
 .hero-visual {
   display: flex;
