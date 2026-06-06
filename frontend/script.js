@@ -17,6 +17,7 @@ function revealOnScroll() {
     }
   });
 }
+setTimeout(revealOnScroll, 100);
 
 window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", revealOnScroll);

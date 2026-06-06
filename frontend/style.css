@@ -3,6 +3,10 @@ body {
   max-width: 100%;
   overflow-x: hidden;
 }
+main,
+section {
+  overflow-x: clip;
+}
 
 * {
   margin: 0;
@@ -424,11 +428,11 @@ h2 {
 }
 
 .slide-left {
-  transform: translateX(-30px);
+  transform: translateX(0px);
 }
 
 .slide-right {
-  transform: translateX(30px);
+  transform: translateX(0px);
 }
 
 .slide-left.active,
@@ -498,6 +502,25 @@ h2 {
 .hero-image-slider {
   max-width: 100%;
 }
+
+.reveal {
+  transform: translateY(25px);
+}
+
+.reveal.active {
+  transform: translateY(0);
+}
+
+.slide-left,
+.slide-right {
+  transform: translateY(25px);
+}
+
+.slide-left.active,
+.slide-right.active {
+  transform: translateY(0);
+}
+
 }
 .hero-visual {
   display: flex;
