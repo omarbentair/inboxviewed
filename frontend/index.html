@@ -3,26 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Enigmail - Premium Brand Retention Architecture</title>
+  <title>InboxViewed — Custom-Coded Email Systems for Ecommerce</title>
+  <meta name="description" content="InboxViewed builds custom-coded email systems for ecommerce brands who've outgrown templates. Retention audits, hand-built HTML, Figma design, and full-scale Klaviyo management." />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="assets/enigmail-cursor.png">
+  <link rel="icon" type="image/png" href="assets/brand/favicon-32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="assets/brand/favicon-512.png" sizes="512x512">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <div class="cursor-glow"></div>
   <div class="custom-cursor"></div>
 
-  <header class="navbar">
+  <!-- ===== TOOLBAR / HEADER ===== -->
+  <header class="toolbar">
     <div class="brand">
-      <img src="assets/logo.png" alt="Enigmail logo" />
-      <span>Enigmail</span>
+      <img src="assets/brand/logo-mark.png" alt="InboxViewed mark" class="brand-mark" />
+      <span>InboxViewed</span>
     </div>
 
-    <nav class="nav-links" id="navLinks">
-      <a href="#services">Services</a>
-      <a href="#work">Designs</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+    <nav class="nav-tabs" id="navLinks">
+      <a href="#services"><span class="tab-dot"></span>Services</a>
+      <a href="#audit"><span class="tab-dot"></span>Audit</a>
+      <a href="#work"><span class="tab-dot"></span>Work</a>
+      <a href="#about"><span class="tab-dot"></span>About</a>
+      <a href="#team"><span class="tab-dot"></span>Team</a>
+      <a href="#contact" class="nav-cta">Contact</a>
     </nav>
 
     <button class="menu-btn" id="menuBtn" aria-label="Open navigation menu">☰</button>
@@ -30,68 +38,192 @@
 
   <main>
 
+    <!-- ===== HERO — "opened email" ===== -->
     <section class="hero reveal">
-      <div class="hero-content">
-        <p class="eyebrow">Premium Brand Retention Architecture</p>
-        <h1>Email visuals that make brands look impossible to ignore.</h1>
 
-        <p class="hero-text">
-          We design premium marketing campaigns, newsletters, and email flows
-          that help businesses retain customers and elevate their brand image.
-        </p>
-
-        <div class="hero-buttons">
-          <a href="#work" class="btn primary">View Designs</a>
-          <a href="mailto:service@enigmail.space" class="btn secondary">Contact Us</a>
+      <div class="inbox-stack" aria-hidden="true">
+        <div class="stack-row">
+          <span class="stack-dot"></span>
+          <span class="stack-sender">Retention Audit</span>
+          <span class="stack-subject">Your emails are losing sales — here's why</span>
+          <span class="stack-time">Now</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-dot read"></span>
+          <span class="stack-sender">Klaviyo Ops</span>
+          <span class="stack-subject">Flow performance report — flows optimized</span>
+          <span class="stack-time">1d</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-dot"></span>
+          <span class="stack-sender">Studio Build</span>
+          <span class="stack-subject">Hand-coded HTML, shipped and tested</span>
+          <span class="stack-time">2d</span>
         </div>
       </div>
 
-      <div class="hero-visual reveal slide-right">
-  <div class="hero-image-slider">
-    <img src="assets/hero/1.webp" class="hero-img active" alt="Enigmail visual concept 1">
-    <img src="assets/hero/2.webp" class="hero-img" alt="Enigmail visual concept 2">
-  </div>
-</div>
+      <article class="email-open">
+        <div class="email-open-head">
+          <div class="email-avatar">IV</div>
+          <div class="email-meta">
+            <p class="email-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
+            <p class="email-to">to: brands who've outgrown templates</p>
+          </div>
+          <span class="email-tag">Unread</span>
+        </div>
+
+        <h1>Delivered means nothing.<br>Viewed means something.</h1>
+
+        <p class="hero-text">
+          We build custom-coded email systems for ecommerce brands who've outgrown templates —
+          pairing elite design and copy with hand-built HTML architecture, retention audits,
+          premium Figma layouts, and full-scale Klaviyo management.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#audit" class="btn primary">Get an Audit</a>
+          <a href="#work" class="btn secondary">See the Work</a>
+        </div>
+
+        <div class="email-attachment">
+          <div class="hero-image-slider">
+            <img src="assets/hero/1.webp" class="hero-img active" alt="InboxViewed design concept 1">
+            <img src="assets/hero/2.webp" class="hero-img" alt="InboxViewed design concept 2">
+          </div>
+          <p class="attachment-label">attachment — preview.webp</p>
+        </div>
+      </article>
     </section>
 
+    <!-- ===== SERVICES — inbox rows ===== -->
     <section class="services reveal" id="services">
-      <p class="eyebrow">Our Services</p>
-      <h2>What we design</h2>
+      <p class="eyebrow">Inbox — Services</p>
+      <h2>What we build</h2>
 
-      <div class="grid">
-        <article class="card reveal">
-          <h3>Marketing Campaigns</h3>
-          <p>
-            Promotional email visuals for product launches, sales, events,
-            seasonal offers, and brand announcements.
-          </p>
-        </article>
+      <div class="inbox-panel">
 
-        <article class="card reveal">
-          <h3>Newsletters</h3>
-          <p>
-            Clean and premium newsletters that keep audiences engaged,
-            informed, and connected to the brand.
-          </p>
-        </article>
+        <div class="inbox-row reveal-row">
+          <span class="row-dot"></span>
+          <div class="row-avatar">RA</div>
+          <div class="row-body">
+            <p class="row-subject">Retention Audits</p>
+            <p class="row-preview">We tear down your existing flows and campaigns to find exactly where conversions leak.</p>
+          </div>
+          <span class="row-tag">AUDIT</span>
+        </div>
 
-        <article class="card reveal">
-          <h3>Email Flows</h3>
-          <p>
-            Visual email sequences for welcome flows, abandoned carts,
-            post-purchase journeys, and customer retention.
-          </p>
-        </article>
+        <div class="inbox-row reveal-row">
+          <span class="row-dot"></span>
+          <div class="row-avatar">FG</div>
+          <div class="row-body">
+            <p class="row-subject">Premium Figma Design</p>
+            <p class="row-preview">Layouts built to convert first — engineered to render pixel-perfect second.</p>
+          </div>
+          <span class="row-tag">FIGMA</span>
+        </div>
+
+        <div class="inbox-row reveal-row">
+          <span class="row-dot"></span>
+          <div class="row-avatar">HC</div>
+          <div class="row-body">
+            <p class="row-subject">Hand-Coded HTML</p>
+            <p class="row-preview">No templates, no drag-and-drop builders. Custom architecture that renders clean everywhere.</p>
+          </div>
+          <span class="row-tag">HTML</span>
+        </div>
+
+        <div class="inbox-row reveal-row">
+          <span class="row-dot"></span>
+          <div class="row-avatar">KL</div>
+          <div class="row-body">
+            <p class="row-subject">Klaviyo Management</p>
+            <p class="row-preview">Full-scale flow and campaign management, built and optimized inside your account.</p>
+          </div>
+          <span class="row-tag">KLAVIYO</span>
+        </div>
+
+        <div class="inbox-row reveal-row">
+          <span class="row-dot"></span>
+          <div class="row-avatar">AI</div>
+          <div class="row-body">
+            <p class="row-subject">Email AI Flows</p>
+            <p class="row-preview">AI-assisted flow logic that reacts to customer behavior instead of a fixed timer.</p>
+          </div>
+          <span class="row-tag">AI</span>
+        </div>
+
       </div>
     </section>
 
+    <!-- ===== AUDIT TEARDOWN ===== -->
+    <section class="audit reveal" id="audit">
+      <p class="eyebrow">Sample Audit</p>
+      <h2>This email is losing sales. Here's why.</h2>
+      <p class="section-text">
+        A real breakdown of the kind of issues we find in the first five minutes of an audit.
+        Every one of these is a customer who almost converted, but didn't.
+      </p>
+
+      <div class="teardown">
+        <div class="teardown-mock">
+
+          <div class="mock-header">
+            <span class="mock-logo">BRAND CO.</span>
+            <span class="mock-nav">Shop · New · Sale</span>
+          </div>
+
+          <div class="mock-hero">
+            <span class="mock-hero-title">SUMMER SALE IS HERE</span>
+            <span class="mock-hero-sub">up to 40% off select styles for a limited time only, don't miss out on these incredible savings while supplies last</span>
+            <div class="mock-cta-row">
+              <span class="mock-btn">Shop Sale</span>
+              <span class="mock-btn ghost">Shop New</span>
+              <span class="mock-btn ghost">View Lookbook</span>
+            </div>
+          </div>
+
+          <div class="mock-footer">
+            <span>Unsubscribe · Privacy Policy · Contact Us · Follow Us · Terms</span>
+          </div>
+
+          <!-- annotations -->
+          <button class="mark mark-1" style="top:16%; left:62%;">1</button>
+          <button class="mark mark-2" style="top:52%; left:20%;">2</button>
+          <button class="mark mark-3" style="top:58%; left:52%;">3</button>
+          <button class="mark mark-4" style="top:88%; left:35%;">4</button>
+        </div>
+
+        <div class="teardown-notes">
+          <div class="note active" data-mark="1">
+            <span class="note-index">01</span>
+            <p><strong>Competing CTAs.</strong> Three buttons of equal weight give the reader nothing to decide first. One primary action, always.</p>
+          </div>
+          <div class="note" data-mark="2">
+            <span class="note-index">02</span>
+            <p><strong>Wall of text.</strong> The subheadline is doing a paragraph's job. Say less, and say it bigger.</p>
+          </div>
+          <div class="note" data-mark="3">
+            <span class="note-index">03</span>
+            <p><strong>Low contrast.</strong> Light text on a busy background drops below readable contrast on most inboxes.</p>
+          </div>
+          <div class="note" data-mark="4">
+            <span class="note-index">04</span>
+            <p><strong>Weak footer.</strong> Five links with no hierarchy — nothing points back to the brand or the next purchase.</p>
+          </div>
+
+          <a href="#contact" class="btn primary audit-cta">Request Your Audit</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WORK ===== -->
     <section class="work reveal" id="work">
-      <p class="eyebrow">Design Showcase</p>
-      <h2>Real email visuals from Enigmail</h2>
+      <p class="eyebrow">Sent — Work</p>
+      <h2>Real email systems from InboxViewed</h2>
 
       <p class="section-text">
-        A selection of our latest design examples, created for premium email campaigns,
-        newsletters, and retention-focused brand communication.
+        A selection of design and build work — campaigns, flows, and layouts engineered
+        to perform as beautifully as they convert.
       </p>
 
       <div class="post-showcase">
@@ -99,87 +231,142 @@
         <article class="post-card reveal">
           <div class="post-slider">
             <div class="post-track">
-              <img src="assets/posts/post1/1.webp" alt="Enigmail post 1 design 1">
-              <img src="assets/posts/post1/2.webp" alt="Enigmail post 1 design 2">
+              <img src="assets/posts/post1/1.webp" alt="InboxViewed campaign design 1">
+              <img src="assets/posts/post1/2.webp" alt="InboxViewed campaign design 2">
             </div>
           </div>
 
           <div class="post-info">
             <h3>Campaign Design</h3>
-            <p>Visual direction for promotional email campaigns.</p>
+            <p>Hand-coded visual direction for a promotional email campaign.</p>
           </div>
         </article>
 
         <article class="post-card reveal">
           <div class="post-slider">
             <div class="post-track">
-              <img src="assets/posts/post2/1.webp" alt="Enigmail post 3 design 1">
-              <img src="assets/posts/post2/2.webp" alt="Enigmail post 3 design 2">
+              <img src="assets/posts/post2/1.webp" alt="InboxViewed email flow design 1">
+              <img src="assets/posts/post2/2.webp" alt="InboxViewed email flow design 2">
             </div>
           </div>
 
           <div class="post-info">
             <h3>Email Flow</h3>
-            <p>Retention-focused visuals for automated email journeys.</p>
+            <p>Retention-focused visuals for an automated Klaviyo flow.</p>
           </div>
         </article>
 
       </div>
     </section>
 
+    <!-- ===== ABOUT — pinned note ===== -->
     <section class="about reveal" id="about">
-      <p class="eyebrow">About Enigmail</p>
-      <h2>Premium Brand Retention Architecture</h2>
+      <div class="pinned-note">
+        <span class="pin-tag">📌 Pinned</span>
+        <p class="eyebrow">About InboxViewed</p>
+        <h2>Know your value.</h2>
 
-      <p>
-        Enigmail helps businesses create stronger customer relationships
-        through premium email design. We focus on clean visuals, strong brand
-        presentation, and email experiences that feel intentional from the
-        first scroll to the final click.
-      </p>
+        <p>
+          Every email either gets seen, or scrolled past. We build for the first outcome.
+          InboxViewed exists for ecommerce brands who've outgrown what a template can do —
+          brands that need design, code, and strategy working as one system instead of
+          three separate vendors.
+        </p>
 
-      <p>
-        Our mission is simple: make every campaign look sharp, professional,
-        and memorable.
-      </p>
+        <p>
+          We pair elite design and copy with hand-built HTML architecture, retention audits,
+          premium Figma layouts, and full-scale Klaviyo management — all engineered to
+          perform as beautifully as they convert.
+        </p>
+      </div>
     </section>
 
-    <section class="contact reveal" id="contact">
-      <p class="eyebrow">Contact</p>
-      <h2>Let’s build your next email campaign</h2>
+    <!-- ===== TEAM ===== -->
+    <section class="team reveal" id="team">
+      <p class="eyebrow">Contacts</p>
+      <h2>Who's building it</h2>
 
-      <p>
-        Contact us via email or through our social platforms.
-      </p>
+      <div class="contact-cards">
+        <article class="contact-card reveal">
+          <div class="contact-avatar">EN</div>
+          <div class="contact-details">
+            <p class="contact-name">Enigma</p>
+            <p class="contact-role">Chief Executive Officer</p>
+            <p class="contact-status">Still learning. Still building. Never satisfied.</p>
+          </div>
+        </article>
+
+        <article class="contact-card reveal">
+          <div class="contact-avatar">GR</div>
+          <div class="contact-details">
+            <p class="contact-name">Graham</p>
+            <p class="contact-role">Chief Technology Officer</p>
+            <p class="contact-status">Obsessed with the details no one else notices.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT — compose ===== -->
+    <section class="contact reveal" id="contact">
+      <p class="eyebrow">New Message</p>
+      <h2>Let's build your next email system</h2>
+
+      <form class="compose" id="composeForm">
+        <div class="compose-field">
+          <label>To</label>
+          <span>InboxViewed</span>
+        </div>
+        <div class="compose-field">
+          <label for="composeSubject">Subject</label>
+          <input type="text" id="composeSubject" name="subject" placeholder="Tell us about your brand" required />
+        </div>
+        <div class="compose-field compose-field-message">
+          <label for="composeMessage">Message</label>
+          <textarea id="composeMessage" name="message" rows="4" placeholder="What are you looking to fix or build?" required></textarea>
+        </div>
+
+        <div class="compose-actions">
+          <button type="submit" class="btn primary">Send</button>
+          <span class="compose-hint">Opens your email app — we haven't wired up a backend yet.</span>
+        </div>
+      </form>
 
       <div class="socials">
-        <a href="mailto:service@enigmail.space" class="social-link">Email</a>
-        <a href="https://instagram.com/enigmail.studio" target="_blank" class="social-link">Instagram</a>
-        <a href="#" class="social-link coming-soon">LinkedIn</a>
-        <a href="#" class="social-link coming-soon">More Soon</a>
+        <a href="https://www.instagram.com/inboxviewed/" target="_blank" rel="noopener" class="social-link">Instagram</a>
+        <a href="https://www.linkedin.com/company/inboxviewed/" target="_blank" rel="noopener" class="social-link">LinkedIn</a>
       </div>
     </section>
 
   </main>
 
+  <!-- ===== COMPOSE FAB ===== -->
+  <a href="#contact" class="compose-fab" aria-label="New message">
+    <span class="fab-icon">✎</span>
+    <span class="fab-label">New Message</span>
+  </a>
+
   <footer class="premium-footer">
     <div class="footer-brand">
-      <img src="assets/logo.png" alt="Enigmail logo" />
+      <img src="assets/brand/logo-mark.png" alt="InboxViewed mark" />
       <div>
-        <h3>Enigmail</h3>
-        <p>Premium Brand Retention Architecture</p>
+        <h3>InboxViewed</h3>
+        <p>Custom-coded email systems for brands who've outgrown templates.</p>
       </div>
     </div>
 
     <div class="footer-links">
       <a href="#services">Services</a>
-      <a href="#work">Designs</a>
+      <a href="#audit">Audit</a>
+      <a href="#work">Work</a>
       <a href="#about">About</a>
+      <a href="#team">Team</a>
       <a href="mailto:service@enigmail.space">Email</a>
-      <a href="https://instagram.com/enigmail.studio" target="_blank">Instagram</a>
+      <a href="https://www.instagram.com/inboxviewed/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.linkedin.com/company/inboxviewed/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
 
-    <p class="footer-bottom">© 2026 Enigmail. All rights reserved.</p>
+    <p class="footer-bottom">© 2026 InboxViewed. All rights reserved.</p>
   </footer>
 
   <script src="script.js"></script>
