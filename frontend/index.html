@@ -14,6 +14,20 @@
 </head>
 <body>
 
+  <!-- ===== BOOT INTRO — red curtain, X mark fades away, then zooms through ===== -->
+  <div class="boot-intro" id="bootIntro" aria-hidden="true">
+    <svg class="boot-curtain" id="bootCurtain" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <mask id="bootCurtainMask" maskUnits="userSpaceOnUse" x="-200" y="-200" width="1400" height="1400">
+          <rect x="-200" y="-200" width="1400" height="1400" fill="#fff"></rect>
+          <image href="assets/brand/boot-symbol-hole.png" x="430" y="430" width="140" height="140" preserveAspectRatio="xMidYMid meet"></image>
+        </mask>
+      </defs>
+      <rect class="boot-curtain-rect" x="-200" y="-200" width="1400" height="1400" mask="url(#bootCurtainMask)"></rect>
+    </svg>
+    <div class="boot-mark-cover" id="bootMarkCover"></div>
+  </div>
+
   <div class="cursor-glow"></div>
   <div class="custom-cursor"></div>
 
@@ -28,12 +42,14 @@
       <a href="#services"><span class="tab-dot"></span>Services</a>
       <a href="#audit"><span class="tab-dot"></span>Audit</a>
       <a href="#work"><span class="tab-dot"></span>Work</a>
+      <a href="#reviews"><span class="tab-dot"></span>Reviews</a>
       <a href="#about"><span class="tab-dot"></span>About</a>
       <a href="#team"><span class="tab-dot"></span>Team</a>
       <a href="#contact" class="nav-cta">Contact</a>
     </nav>
 
     <button class="menu-btn" id="menuBtn" aria-label="Open navigation menu">☰</button>
+    <div class="neon-bar" id="neonBar" aria-hidden="true"></div>
   </header>
 
   <main>
@@ -95,63 +111,217 @@
       </article>
     </section>
 
-    <!-- ===== SERVICES — inbox rows ===== -->
+    <!-- ===== SERVICES — Outlook-style mail app ===== -->
     <section class="services reveal" id="services">
       <p class="eyebrow">Inbox — Services</p>
       <h2>What we build</h2>
 
-      <div class="inbox-panel">
+      <div class="mail-app">
 
-        <div class="inbox-row reveal-row">
-          <span class="row-dot"></span>
-          <div class="row-avatar">RA</div>
-          <div class="row-body">
-            <p class="row-subject">Retention Audits</p>
-            <p class="row-preview">We tear down your existing flows and campaigns to find exactly where conversions leak.</p>
+        <aside class="mail-sidebar" aria-label="Service mailbox folders">
+          <div class="mail-sidebar-brand">
+            <img src="assets/brand/logo-mark.png" alt="" />
+            <span>InboxViewed Mail</span>
           </div>
-          <span class="row-tag">AUDIT</span>
+
+          <a href="#contact" class="compose-mini">+ New project</a>
+
+          <div class="mail-folders">
+            <button class="mail-folder active" type="button" aria-current="page">
+              <span>▣ Inbox</span>
+              <span>5</span>
+            </button>
+            <button class="mail-folder" type="button">☆ Priority</button>
+            <button class="mail-folder" type="button">✓ Delivered</button>
+            <button class="mail-folder" type="button">⌁ Archive</button>
+          </div>
+        </aside>
+
+        <div class="mail-list" id="serviceList" aria-label="Service emails">
+
+          <button class="mail-item reveal-row active" data-service="audit">
+            <span class="mail-item-dot"></span>
+            <div class="mail-item-avatar">RA</div>
+            <div class="mail-item-body">
+              <p class="mail-item-subject">Retention Audits</p>
+              <p class="mail-item-preview">We tear down your existing flows and campaigns to find exactly where conversions leak.</p>
+            </div>
+            <span class="mail-item-tag">AUDIT</span>
+          </button>
+
+          <button class="mail-item reveal-row" data-service="figma">
+            <span class="mail-item-dot"></span>
+            <div class="mail-item-avatar">FG</div>
+            <div class="mail-item-body">
+              <p class="mail-item-subject">Premium Figma Design</p>
+              <p class="mail-item-preview">Layouts built to convert first — engineered to render pixel-perfect second.</p>
+            </div>
+            <span class="mail-item-tag">FIGMA</span>
+          </button>
+
+          <button class="mail-item reveal-row" data-service="html">
+            <span class="mail-item-dot"></span>
+            <div class="mail-item-avatar">HC</div>
+            <div class="mail-item-body">
+              <p class="mail-item-subject">Hand-Coded HTML</p>
+              <p class="mail-item-preview">No templates, no drag-and-drop builders. Custom architecture that renders clean everywhere.</p>
+            </div>
+            <span class="mail-item-tag">HTML</span>
+          </button>
+
+          <button class="mail-item reveal-row" data-service="klaviyo">
+            <span class="mail-item-dot"></span>
+            <div class="mail-item-avatar">KL</div>
+            <div class="mail-item-body">
+              <p class="mail-item-subject">Klaviyo Management</p>
+              <p class="mail-item-preview">Full-scale flow and campaign management, built and optimized inside your account.</p>
+            </div>
+            <span class="mail-item-tag">KLAVIYO</span>
+          </button>
+
+          <button class="mail-item reveal-row" data-service="ai">
+            <span class="mail-item-dot"></span>
+            <div class="mail-item-avatar">AI</div>
+            <div class="mail-item-body">
+              <p class="mail-item-subject">Email AI Flows</p>
+              <p class="mail-item-preview">AI-assisted flow logic that reacts to customer behavior instead of a fixed timer.</p>
+            </div>
+            <span class="mail-item-tag">AI</span>
+          </button>
+
         </div>
 
-        <div class="inbox-row reveal-row">
-          <span class="row-dot"></span>
-          <div class="row-avatar">FG</div>
-          <div class="row-body">
-            <p class="row-subject">Premium Figma Design</p>
-            <p class="row-preview">Layouts built to convert first — engineered to render pixel-perfect second.</p>
+        <div class="mail-reading-pane" id="serviceReader">
+          <div class="reader-toolbar" aria-label="Message actions">
+            <button type="button" aria-label="Reply">↩</button>
+            <button type="button" aria-label="Mark as priority">☆</button>
+            <button type="button" aria-label="Archive">⌁</button>
+            <button type="button" aria-label="More actions">⋯</button>
           </div>
-          <span class="row-tag">FIGMA</span>
-        </div>
 
-        <div class="inbox-row reveal-row">
-          <span class="row-dot"></span>
-          <div class="row-avatar">HC</div>
-          <div class="row-body">
-            <p class="row-subject">Hand-Coded HTML</p>
-            <p class="row-preview">No templates, no drag-and-drop builders. Custom architecture that renders clean everywhere.</p>
-          </div>
-          <span class="row-tag">HTML</span>
-        </div>
+          <article class="mail-reading active" data-service="audit" tabindex="-1">
+            <div class="mail-reading-head">
+              <div class="mail-reading-avatar">RA</div>
+              <div class="mail-reading-meta">
+                <p class="mail-reading-subject">Retention Audits</p>
+                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
+              </div>
+              <span class="mail-reading-tag">AUDIT</span>
+            </div>
+            <div class="mail-reading-body">
+              <p>
+                We tear down your existing flows and campaigns email by email — welcome, abandoned cart,
+                post-purchase, win-back, browse abandonment — and score every one against open rate, click
+                rate, conversion rate, and revenue per recipient.
+              </p>
+              <ul>
+                <li>Full flow-by-flow and campaign-by-campaign performance review</li>
+                <li>Segmentation and deliverability health check</li>
+                <li>Design and mobile-responsiveness audit</li>
+                <li>A prioritized list of exactly what's leaking revenue, and why</li>
+              </ul>
+            </div>
+            <a href="#contact" class="btn primary reading-cta">Reply — Get an Audit</a>
+          </article>
 
-        <div class="inbox-row reveal-row">
-          <span class="row-dot"></span>
-          <div class="row-avatar">KL</div>
-          <div class="row-body">
-            <p class="row-subject">Klaviyo Management</p>
-            <p class="row-preview">Full-scale flow and campaign management, built and optimized inside your account.</p>
-          </div>
-          <span class="row-tag">KLAVIYO</span>
-        </div>
+          <article class="mail-reading" data-service="figma" tabindex="-1">
+            <div class="mail-reading-head">
+              <div class="mail-reading-avatar">FG</div>
+              <div class="mail-reading-meta">
+                <p class="mail-reading-subject">Premium Figma Design</p>
+                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
+              </div>
+              <span class="mail-reading-tag">FIGMA</span>
+            </div>
+            <div class="mail-reading-body">
+              <p>
+                Layouts built with hierarchy, imagery, typography, and spacing that match your brand —
+                designed for both desktop and mobile widths from the first frame.
+              </p>
+              <ul>
+                <li>Modular, reusable header / product-grid / footer components</li>
+                <li>Faster future builds using a shared component system</li>
+                <li>Consistent with your existing brand asset library</li>
+                <li>Ready to hand straight to development — no guesswork</li>
+              </ul>
+            </div>
+            <a href="#contact" class="btn primary reading-cta">Reply — Start a Design</a>
+          </article>
 
-        <div class="inbox-row reveal-row">
-          <span class="row-dot"></span>
-          <div class="row-avatar">AI</div>
-          <div class="row-body">
-            <p class="row-subject">Email AI Flows</p>
-            <p class="row-preview">AI-assisted flow logic that reacts to customer behavior instead of a fixed timer.</p>
-          </div>
-          <span class="row-tag">AI</span>
-        </div>
+          <article class="mail-reading" data-service="html" tabindex="-1">
+            <div class="mail-reading-head">
+              <div class="mail-reading-avatar">HC</div>
+              <div class="mail-reading-meta">
+                <p class="mail-reading-subject">Hand-Coded HTML</p>
+                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
+              </div>
+              <span class="mail-reading-tag">HTML</span>
+            </div>
+            <div class="mail-reading-body">
+              <p>
+                No templates, no drag-and-drop builders. We hand-write table-based, inlined-CSS HTML because
+                that's what actually renders clean in Outlook, Gmail, Apple Mail, and Yahoo — not just the
+                preview pane.
+              </p>
+              <ul>
+                <li>Dark-mode compatible from the start</li>
+                <li>Tested across dozens of real email clients before send</li>
+                <li>Built to survive being forwarded, printed, and clipped</li>
+                <li>The step that separates a custom build from a template</li>
+              </ul>
+            </div>
+            <a href="#contact" class="btn primary reading-cta">Reply — Build It Custom</a>
+          </article>
 
+          <article class="mail-reading" data-service="klaviyo" tabindex="-1">
+            <div class="mail-reading-head">
+              <div class="mail-reading-avatar">KL</div>
+              <div class="mail-reading-meta">
+                <p class="mail-reading-subject">Klaviyo Management</p>
+                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
+              </div>
+              <span class="mail-reading-tag">KLAVIYO</span>
+            </div>
+            <div class="mail-reading-body">
+              <p>
+                Full-scale flow and campaign management built and optimized inside your own Klaviyo account —
+                triggers, delays, conditional splits, segments, and QA, end to end.
+              </p>
+              <ul>
+                <li>Flow builder logic — "if clicked, send X; if not, send Y"</li>
+                <li>Audience segmentation and targeting setup</li>
+                <li>End-to-end QA before every flow goes live</li>
+                <li>Ongoing optimization based on real performance data</li>
+              </ul>
+            </div>
+            <a href="#contact" class="btn primary reading-cta">Reply — Manage My Klaviyo</a>
+          </article>
+
+          <article class="mail-reading" data-service="ai" tabindex="-1">
+            <div class="mail-reading-head">
+              <div class="mail-reading-avatar">AI</div>
+              <div class="mail-reading-meta">
+                <p class="mail-reading-subject">Email AI Flows</p>
+                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
+              </div>
+              <span class="mail-reading-tag">AI</span>
+            </div>
+            <div class="mail-reading-body">
+              <p>
+                AI-assisted flow logic that reacts to actual customer behavior instead of running on a fixed
+                timer — so the right email goes out at the right moment, not just three days later.
+              </p>
+              <ul>
+                <li>Behavior-based send-time and content decisions</li>
+                <li>Layered on top of your existing Klaviyo flows</li>
+                <li>Built to complement hand-coded HTML, not replace it</li>
+                <li>Early-stage offering — happy to walk through what's possible</li>
+              </ul>
+            </div>
+            <a href="#contact" class="btn primary reading-cta">Reply — Ask About AI Flows</a>
+          </article>
+
+        </div>
       </div>
     </section>
 
@@ -259,6 +429,83 @@
       </div>
     </section>
 
+    <!-- ===== REVIEWS & CLIENTS — scrolling marquees ===== -->
+    <!-- NOTE: placeholder content below — swap in real client reviews/logos once available -->
+    <section class="proof reveal" id="reviews">
+      <p class="eyebrow">Reviews — Clients</p>
+      <h2>What people say</h2>
+
+      <div class="marquee reviews-marquee">
+        <div class="marquee-track">
+
+          <div class="review-card">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
+            <p class="review-author">Client Name <span>— Brand Co.</span></p>
+          </div>
+          <div class="review-card">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
+            <p class="review-author">Client Name <span>— Brand Co.</span></p>
+          </div>
+          <div class="review-card">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
+            <p class="review-author">Client Name <span>— Brand Co.</span></p>
+          </div>
+          <div class="review-card">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
+            <p class="review-author">Client Name <span>— Brand Co.</span></p>
+          </div>
+
+          <!-- duplicate set for seamless loop, hidden from assistive tech -->
+          <div class="review-card" aria-hidden="true">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
+            <p class="review-author">Client Name <span>— Brand Co.</span></p>
+          </div>
+          <div class="review-card" aria-hidden="true">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
+            <p class="review-author">Client Name <span>— Brand Co.</span></p>
+          </div>
+          <div class="review-card" aria-hidden="true">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
+            <p class="review-author">Client Name <span>— Brand Co.</span></p>
+          </div>
+          <div class="review-card" aria-hidden="true">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
+            <p class="review-author">Client Name <span>— Brand Co.</span></p>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="marquee clients-marquee">
+        <div class="marquee-track">
+
+          <div class="client-badge"><span class="client-mark">✕</span>Brand One</div>
+          <div class="client-badge"><span class="client-mark">✕</span>Brand Two</div>
+          <div class="client-badge"><span class="client-mark">✕</span>Brand Three</div>
+          <div class="client-badge"><span class="client-mark">✕</span>Brand Four</div>
+          <div class="client-badge"><span class="client-mark">✕</span>Brand Five</div>
+          <div class="client-badge"><span class="client-mark">✕</span>Brand Six</div>
+
+          <!-- duplicate set for seamless loop -->
+          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand One</div>
+          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Two</div>
+          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Three</div>
+          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Four</div>
+          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Five</div>
+          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Six</div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- ===== ABOUT — pinned note ===== -->
     <section class="about reveal" id="about">
       <div class="pinned-note">
@@ -286,6 +533,32 @@
       <p class="eyebrow">Contacts</p>
       <h2>Who's building it</h2>
 
+      <div class="team-photo-wrap" id="teamPhotoWrap">
+        <img src="assets/team-photo-mono.jpg" alt="Enigma and Graham in the studio" class="photo-mono" />
+        <img src="assets/team-photo-color.jpg" alt="" class="photo-color" id="photoColor" />
+
+        <button class="photo-hotspot" data-person="enigma" data-x="41%" data-y="50.5%" aria-label="Enigma — Chief Executive Officer"></button>
+        <button class="photo-hotspot" data-person="graham" data-x="60.3%" data-y="50.5%" aria-label="Graham — Chief Technology Officer"></button>
+
+        <div class="photo-card" data-card="enigma">
+          <p class="photo-card-name">Enigma</p>
+          <p class="photo-card-role">Chief Executive Officer</p>
+          <div class="photo-card-links">
+            <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="#" target="_blank" rel="noopener">Instagram</a>
+          </div>
+        </div>
+
+        <div class="photo-card" data-card="graham" style="top:47.5%; left:59.3%;">
+          <p class="photo-card-name">Graham</p>
+          <p class="photo-card-role">Chief Technology Officer</p>
+          <div class="photo-card-links">
+            <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="#" target="_blank" rel="noopener">Instagram</a>
+          </div>
+        </div>
+      </div>
+
       <div class="contact-cards">
         <article class="contact-card reveal">
           <div class="contact-avatar">EN</div>
@@ -312,29 +585,62 @@
       <p class="eyebrow">New Message</p>
       <h2>Let's build your next email system</h2>
 
-      <form class="compose" id="composeForm">
-        <div class="compose-field">
-          <label>To</label>
-          <span>InboxViewed</span>
-        </div>
-        <div class="compose-field">
-          <label for="composeSubject">Subject</label>
-          <input type="text" id="composeSubject" name="subject" placeholder="Tell us about your brand" required />
-        </div>
-        <div class="compose-field compose-field-message">
-          <label for="composeMessage">Message</label>
-          <textarea id="composeMessage" name="message" rows="4" placeholder="What are you looking to fix or build?" required></textarea>
-        </div>
+      <div class="contact-layout">
+        <form class="compose" id="composeForm">
+          <div class="compose-field">
+            <label>To</label>
+            <span>InboxViewed</span>
+          </div>
+          <div class="compose-field">
+            <label for="composeSubject">Subject</label>
+            <input type="text" id="composeSubject" name="subject" placeholder="Tell us about your brand" required />
+          </div>
+          <div class="compose-field compose-field-message">
+            <label for="composeMessage">Message</label>
+            <textarea id="composeMessage" name="message" rows="4" placeholder="What are you looking to fix or build?" required></textarea>
+          </div>
 
-        <div class="compose-actions">
-          <button type="submit" class="btn primary">Send</button>
-          <span class="compose-hint">Opens your email app — we haven't wired up a backend yet.</span>
-        </div>
-      </form>
+          <div class="compose-actions">
+            <button type="submit" class="btn primary">Send</button>
+            <span class="compose-hint">Opens your email app — we haven't wired up a backend yet.</span>
+          </div>
+        </form>
 
-      <div class="socials">
-        <a href="https://www.instagram.com/inboxviewed/" target="_blank" rel="noopener" class="social-link">Instagram</a>
-        <a href="https://www.linkedin.com/company/inboxviewed/" target="_blank" rel="noopener" class="social-link">LinkedIn</a>
+        <aside class="direct-contact" aria-label="Direct contact options">
+          <p class="direct-contact-label">Prefer a direct conversation?</p>
+
+          <div class="socials">
+            <a href="https://wa.me/212783824347" target="_blank" rel="noopener" class="social-card whatsapp" aria-label="Contact InboxViewed on WhatsApp Business at +212 783-824347">
+              <span class="social-card-icon" aria-hidden="true">WA</span>
+              <span class="social-card-copy">
+                <b>WhatsApp Business</b>
+                <span>+212 783-824347</span>
+                <small>Usually the fastest way to reach us.</small>
+              </span>
+              <span class="social-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a href="https://www.instagram.com/inboxviewed/" target="_blank" rel="noopener" class="social-card instagram" aria-label="Open InboxViewed on Instagram">
+              <span class="social-card-icon" aria-hidden="true">IG</span>
+              <span class="social-card-copy">
+                <b>Instagram</b>
+                <span>@inboxviewed</span>
+                <small>Design work, process, and studio updates.</small>
+              </span>
+              <span class="social-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a href="https://www.linkedin.com/company/inboxviewed/" target="_blank" rel="noopener" class="social-card linkedin" aria-label="Open the InboxViewed company page on LinkedIn">
+              <span class="social-card-icon" aria-hidden="true">IN</span>
+              <span class="social-card-copy">
+                <b>LinkedIn</b>
+                <span>InboxViewed</span>
+                <small>Company updates and professional insights.</small>
+              </span>
+              <span class="social-card-arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -359,9 +665,11 @@
       <a href="#services">Services</a>
       <a href="#audit">Audit</a>
       <a href="#work">Work</a>
+      <a href="#reviews">Reviews</a>
       <a href="#about">About</a>
       <a href="#team">Team</a>
       <a href="mailto:service@enigmail.space">Email</a>
+      <a href="https://wa.me/212783824347" target="_blank" rel="noopener">WhatsApp</a>
       <a href="https://www.instagram.com/inboxviewed/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://www.linkedin.com/company/inboxviewed/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
