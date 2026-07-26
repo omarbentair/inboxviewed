@@ -8,8 +8,10 @@ if (neonBar) {
   let neonResetTimer = null;
   let neonIsFlickering = false;
 
+  const NEON_FLICKER_CLASSES = ["flicker-quarter", "flicker-three-quarter", "flicker-blackout"];
+
   const settleNeon = () => {
-    neonBar.classList.remove("booting", "flicker-once", "flicker-double");
+    neonBar.classList.remove("booting", ...NEON_FLICKER_CLASSES);
     neonBar.classList.add("steady");
     neonIsFlickering = false;
   };
@@ -18,10 +20,14 @@ if (neonBar) {
     if (reducedMotion.matches || neonIsFlickering || Math.random() > chance) return;
 
     neonIsFlickering = true;
-    neonBar.classList.remove("flicker-once", "flicker-double");
+    neonBar.classList.remove(...NEON_FLICKER_CLASSES);
 
-    const flickerClass = Math.random() < 0.34 ? "flicker-double" : "flicker-once";
-    const duration = flickerClass === "flicker-double" ? 500 : 320;
+    // Pick one of the three occasional events: dim to 25%, dim to 75%,
+    // or a full blackout-then-blip-then-back-on. Blackout is the rarest.
+    const roll = Math.random();
+    const flickerClass =
+      roll < 0.2 ? "flicker-blackout" : roll < 0.6 ? "flicker-quarter" : "flicker-three-quarter";
+    const duration = flickerClass === "flicker-blackout" ? 620 : 420;
 
     // Restart the selected animation cleanly without adding another timer chain.
     void neonBar.offsetWidth;
@@ -71,7 +77,7 @@ if (neonBar) {
       setTimeout(() => {
         settleNeon();
         scheduleNeonFlicker();
-      }, 3050);
+      }, 3400);
     }
   };
 
@@ -88,28 +94,209 @@ if (neonBar) {
 /* ===== Boot intro — X mark fades away, then zooms through ===== */
 const bootIntro = document.getElementById("bootIntro");
 const bootCurtain = document.getElementById("bootCurtain");
+const bootMarkCover = document.getElementById("bootMarkCover");
 const bootReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 if (bootIntro) {
+  const bootAssetUrls = [
+    "assets/brand/boot-symbol-hole.png",
+    "assets/brand/boot-symbol-mask.png",
+  ];
+  const introTimers = new Set();
+  const introCleanups = [];
+  let introFinished = false;
+  let introPhase = "loading";
+
+  const setIntroTimer = (callback, delay) => {
+    const timer = setTimeout(() => {
+      introTimers.delete(timer);
+      callback();
+    }, delay);
+
+    introTimers.add(timer);
+    return timer;
+  };
+
+  const clearIntroResources = () => {
+    introTimers.forEach((timer) => clearTimeout(timer));
+    introTimers.clear();
+    introCleanups.splice(0).forEach((cleanup) => cleanup());
+  };
+
+  const readCssTime = (propertyName, fallbackMs) => {
+    const value = getComputedStyle(document.documentElement)
+      .getPropertyValue(propertyName)
+      .trim();
+
+    if (!value) return fallbackMs;
+    if (value.endsWith("ms")) return Number.parseFloat(value) || fallbackMs;
+    if (value.endsWith("s")) return (Number.parseFloat(value) || 0) * 1000 || fallbackMs;
+    return Number.parseFloat(value) || fallbackMs;
+  };
+
+  const waitForNextPaint = () => new Promise((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(resolve));
+  });
+
+  const preloadAndDecodeImage = (src) => new Promise((resolve, reject) => {
+    const image = new Image();
+    let settled = false;
+
+    const finish = (callback, value) => {
+      if (settled) return;
+      settled = true;
+      image.onload = null;
+      image.onerror = null;
+      callback(value);
+    };
+
+    const resolveLoadedImage = async () => {
+      try {
+        if (typeof image.decode === "function") {
+          await image.decode();
+        }
+      } catch (error) {
+        // Some browsers reject decode() even after a successful load. The
+        // decoded pixels are still allowed to paint, so loading remains valid.
+      }
+
+      finish(resolve, image);
+    };
+
+    image.onload = resolveLoadedImage;
+    image.onerror = () => finish(reject, new Error(`Unable to load intro asset: ${src}`));
+    image.src = src;
+
+    if (image.complete && image.naturalWidth > 0) {
+      resolveLoadedImage();
+    }
+  });
+
+  const preloadIntroAssets = () => {
+    const assetPromise = Promise.all(bootAssetUrls.map(preloadAndDecodeImage));
+    const timeoutPromise = new Promise((_, reject) => {
+      setIntroTimer(() => reject(new Error("Intro asset preload timed out.")), 2400);
+    });
+
+    return Promise.race([assetPromise, timeoutPromise]);
+  };
+
   const finishBootIntro = () => {
+    if (introFinished) return;
+    introFinished = true;
+    introPhase = "intro-complete";
+
+    clearIntroResources();
     document.documentElement.classList.remove("boot-locked");
     bootIntro.remove();
     startNeonBoot();
   };
 
-  if (bootReducedMotion.matches) {
-    // CSS already skips the fade/zoom and hides the overlay instantly for
-    // this case; just clean up the element and let the header light start.
-    finishBootIntro();
-  } else {
+  const runSimpleReveal = (className) => {
+    if (introFinished) return;
+    introPhase = className;
+
+    const handleRevealEnd = (event) => {
+      if (event.target === bootIntro && event.propertyName === "opacity") {
+        finishBootIntro();
+      }
+    };
+
+    bootIntro.addEventListener("transitionend", handleRevealEnd);
+    introCleanups.push(() => bootIntro.removeEventListener("transitionend", handleRevealEnd));
+
+    requestAnimationFrame(() => bootIntro.classList.add(className));
+    setIntroTimer(finishBootIntro, 420);
+  };
+
+  const startCutoutExpansion = () => {
+    if (introFinished || introPhase === "cutout-expanding") return;
+    introPhase = "cutout-expanding";
+
+    const handleCurtainEnd = (event) => {
+      if (event.target === bootCurtain && event.animationName === "boot-curtain-zoom") {
+        finishBootIntro();
+      }
+    };
+
+    if (bootCurtain) {
+      bootCurtain.addEventListener("animationend", handleCurtainEnd);
+      introCleanups.push(() => bootCurtain.removeEventListener("animationend", handleCurtainEnd));
+    }
+
+    bootIntro.classList.add("intro-cutout-ready", "intro-cutout-expanding");
+
+    const zoomDuration = readCssTime("--intro-cutout-zoom-duration", 1500);
+    setIntroTimer(finishBootIntro, zoomDuration + 350);
+  };
+
+  const startLogoFade = () => {
+    if (introFinished || introPhase !== "logo-visible") return;
+    introPhase = "logo-fading";
+
+    const handleLogoFadeEnd = (event) => {
+      if (event.target === bootMarkCover && event.propertyName === "opacity") {
+        startCutoutExpansion();
+      }
+    };
+
+    if (bootMarkCover) {
+      bootMarkCover.addEventListener("transitionend", handleLogoFadeEnd);
+      introCleanups.push(() => bootMarkCover.removeEventListener("transitionend", handleLogoFadeEnd));
+    }
+
+    bootIntro.classList.add("intro-logo-fading");
+
+    // transitionend is the sequencing source of truth. This timeout is only a
+    // bounded failure-safe for browsers that suppress the event unexpectedly.
+    const fadeDuration = readCssTime("--intro-logo-fade-duration", 800);
+    setIntroTimer(startCutoutExpansion, fadeDuration + 180);
+  };
+
+  const beginIntroSequence = async () => {
     document.documentElement.classList.add("boot-locked");
-    const curtainTarget = bootCurtain || bootIntro;
-    curtainTarget.addEventListener("animationend", finishBootIntro, { once: true });
-    // Safety net in case the animationend event is ever missed (e.g. tab was
-    // backgrounded mid-animation) so the site is never left covered and the
-    // light never gets stuck off.
-    setTimeout(finishBootIntro, 2600);
-  }
+    bootIntro.classList.add("intro-loading");
+
+    // One bounded global escape hatch ensures no failed asset, animation, or
+    // backgrounded tab can leave the red curtain permanently covering the site.
+    setIntroTimer(() => {
+      if (!introFinished) {
+        console.warn("InboxViewed intro exceeded its safety window; completing the reveal.");
+        finishBootIntro();
+      }
+    }, 6200);
+
+    try {
+      await preloadIntroAssets();
+      if (introFinished) return;
+
+      bootIntro.classList.remove("intro-loading");
+      bootIntro.classList.add("intro-assets-ready", "intro-logo-visible");
+      introPhase = "logo-visible";
+
+      // Give the decoded mask and white cover a committed paint before any
+      // opacity change. This keeps the two pixel-identical silhouettes locked.
+      await waitForNextPaint();
+      if (introFinished) return;
+
+      if (bootReducedMotion.matches) {
+        const reducedHold = Math.min(
+          readCssTime("--intro-logo-hold-duration", 320),
+          220
+        );
+        setIntroTimer(() => runSimpleReveal("intro-reduced-reveal"), reducedHold);
+        return;
+      }
+
+      const logoHoldDuration = readCssTime("--intro-logo-hold-duration", 320);
+      setIntroTimer(startLogoFade, logoHoldDuration);
+    } catch (error) {
+      console.warn("InboxViewed intro assets could not be prepared; using a simplified reveal.", error);
+      runSimpleReveal("intro-fallback-reveal");
+    }
+  };
+
+  beginIntroSequence();
 } else {
   // No boot intro present on the page for some reason — start the light normally.
   startNeonBoot();
