@@ -283,3 +283,17 @@ For Vercel:
 5. Connect `inboxviewed.com` after the first successful deployment.
 
 Because the site is fully static, it can also be hosted on GitHub Pages, Netlify, Cloudflare Pages, or any standard web server.
+
+## Mobile round 1
+
+The mobile layout now includes Contact in the header menu, mobile-only Audit
+marker placement, permanent side-by-side founder cards beneath the Team image,
+and footer overflow/alignment fixes. The desktop Team hover interaction and all
+other approved desktop layouts remain unchanged.
+
+The founder cards currently crop `assets/team-photo-original.png`. Dedicated
+portraits can later replace the two card image sources while keeping the
+existing card markup and styling.
+
+The intro foreground mark and SVG cutout now share the same `14vmax` mobile
+footprint, so their silhouettes remain aligned during the fade.
