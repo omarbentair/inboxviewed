@@ -1,594 +1,753 @@
-/* ===== Neon bar — boot flicker then settle ===== */
-const neonBar = document.getElementById("neonBar");
+"use strict";
+
+const services = [
+  {
+    icon: '<path d="M4 20 8.8 18.8 19 8.6a2.1 2.1 0 0 0 0-3L18.4 5a2.1 2.1 0 0 0-3 0L5.2 15.2 4 20Z"></path><path d="m13.8 6.6 3.6 3.6M5.2 15.2l3.6 3.6"></path>',
+    title: "Premium Figma Design",
+    copy: "Pixel-perfect layouts built around your brand, your offer, and the way real customers read.",
+    extra: "Modular systems, desktop and mobile frames, ready for development.",
+    points: ["Brand-led layouts", "Desktop + mobile frames", "Development-ready systems"]
+  },
+  {
+    icon: '<path d="m8 5-6 7 6 7M16 5l6 7-6 7M14 3l-4 18"></path>',
+    title: "Hand-Coded HTML",
+    copy: "No templates and no builder limitations. Clean email architecture made to render everywhere.",
+    extra: "Dark-mode aware, responsive, tested, and built to survive the inbox.",
+    points: ["Responsive email code", "Dark-mode aware", "Inbox-tested delivery"]
+  },
+  {
+    icon: '<path d="M4 19V9m6 10V5m6 14v-7m4 7V3"></path><path d="m3 5 5-3 5 3 7-4"></path>',
+    title: "Klaviyo Management",
+    copy: "Flows, campaigns, segmentation, QA, and optimization managed as one connected retention system.",
+    extra: "Strategy and execution inside your account, measured against real performance.",
+    points: ["Campaigns + flows", "Segmentation + QA", "Reporting + optimization"]
+  },
+  {
+    icon: '<circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5M7.5 10.5l2 2 4-4"></path>',
+    title: "Retention Audits",
+    copy: "We find where your emails lose attention, clarity, and revenue, then tell you what to fix first.",
+    extra: "Flow-by-flow analysis covering creative, conversion, deliverability, and structure.",
+    points: ["Creative + conversion", "Deliverability + structure", "Prioritized action plan"]
+  },
+  {
+    icon: '<path d="M12 2l1.4 5.1L18 9l-4.6 1.9L12 16l-1.4-5.1L6 9l4.6-1.9L12 2Z"></path><path d="M5 15l.8 2.2L8 18l-2.2.8L5 21l-.8-2.2L2 18l2.2-.8L5 15Zm14-2 .8 2.2 2.2.8-2.2.8L19 19l-.8-2.2L16 16l2.2-.8L19 13Z"></path>',
+    title: "Email AI Flows",
+    copy: "Behavior-aware flow logic that helps the right message arrive at the right moment.",
+    extra: "Layered onto Klaviyo to support the system, never replace thoughtful strategy.",
+    points: ["Behavior-aware logic", "Dynamic messaging", "Human-led strategy"]
+  }
+];
+
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-let startNeonBoot = () => {};
+const occasionalFlickerClasses = [
+  "flicker-quarter",
+  "flicker-three-quarter",
+  "flicker-blackout"
+];
 
-if (neonBar) {
-  let neonScheduleTimer = null;
-  let neonResetTimer = null;
-  let neonIsFlickering = false;
+const bootIntro = document.querySelector("#bootIntro");
+const bootCurtain = document.querySelector("#bootCurtain");
+const bootMarkCover = document.querySelector("#bootMarkCover");
+const headerLight = document.querySelector(".light");
+const menuButton = document.querySelector(".menu");
+const navigation = document.querySelector("header nav");
+const serviceButtons = [...document.querySelectorAll("[data-service]")];
+const servicesSection = document.querySelector(".services-section");
+const servicesTypedText = document.querySelector("#servicesTypedText");
+const serviceList = document.querySelector(".service-list");
+const serviceCubes = serviceButtons.map((button) => button.querySelector(".service-cube"));
+const serviceDetail = document.querySelector("#service-detail-panel");
+const serviceIcon = document.querySelector("#service-icon");
+const servicePoints = document.querySelector("#service-points");
+const auditSection = document.querySelector(".audit-section");
+const auditScoreValue = document.querySelector("#auditScoreValue");
+const auditControls = [...document.querySelectorAll("[data-audit]")];
+const heroRevealItems = [...document.querySelectorAll(".hero-reveal")];
+const teamSection = document.querySelector(".team-section");
+const teamPhotoWrap = document.querySelector("#teamPhotoWrap");
+const aboutSection = document.querySelector(".about-section");
+const contactSection = document.querySelector(".contact");
+const contactForm = document.querySelector(".compose");
+const contactSubmitButton = contactForm?.querySelector('button[type="submit"]');
+const contactFormStatus = contactForm?.querySelector(".form-status");
 
-  const NEON_FLICKER_CLASSES = ["flicker-quarter", "flicker-three-quarter", "flicker-blackout"];
+let occasionalFlickerTimer = 0;
+let heroStartFallbackTimer = 0;
+let startupUnlockFallbackTimer = 0;
+let servicesTypingStarted = false;
+let serviceCubeFrame = 0;
+let auditRevealStarted = false;
 
-  const settleNeon = () => {
-    neonBar.classList.remove("booting", ...NEON_FLICKER_CLASSES);
-    neonBar.classList.add("steady");
-    neonIsFlickering = false;
-  };
+const typeServicesHeading = () => {
+  if (servicesTypingStarted || !servicesTypedText) return;
+  servicesTypingStarted = true;
 
-  const triggerNeonFlicker = (chance = 1) => {
-    if (reducedMotion.matches || neonIsFlickering || Math.random() > chance) return;
+  const text = "One studio.\nThe whole system.";
+  const firstLineLength = "One studio.".length;
+  let index = 0;
+  servicesTypedText.textContent = "";
 
-    neonIsFlickering = true;
-    neonBar.classList.remove(...NEON_FLICKER_CLASSES);
-
-    // Pick one of the three occasional events: dim to 25%, dim to 75%,
-    // or a full blackout-then-blip-then-back-on. Blackout is the rarest.
-    const roll = Math.random();
-    const flickerClass =
-      roll < 0.2 ? "flicker-blackout" : roll < 0.6 ? "flicker-quarter" : "flicker-three-quarter";
-    const duration = flickerClass === "flicker-blackout" ? 620 : 420;
-
-    // Restart the selected animation cleanly without adding another timer chain.
-    void neonBar.offsetWidth;
-    neonBar.classList.add(flickerClass);
-
-    clearTimeout(neonResetTimer);
-    neonResetTimer = setTimeout(() => {
-      neonBar.classList.remove(flickerClass);
-      neonIsFlickering = false;
-    }, duration);
-  };
-
-  const scheduleNeonFlicker = () => {
-    if (reducedMotion.matches) return;
-
-    clearTimeout(neonScheduleTimer);
-    const delay = 28000 + Math.random() * 32000;
-
-    neonScheduleTimer = setTimeout(() => {
-      triggerNeonFlicker(0.72);
-      scheduleNeonFlicker();
-    }, delay);
-  };
-
-  const handleReducedMotionChange = () => {
-    clearTimeout(neonScheduleTimer);
-    clearTimeout(neonResetTimer);
-    settleNeon();
-
-    if (!reducedMotion.matches) {
-      scheduleNeonFlicker();
+  const typeNextCharacter = () => {
+    if (index >= text.length) {
+      servicesSection?.classList.add("typing-complete");
+      return;
     }
-  };
 
-  // Called once the boot intro has fully resolved (curtain zoomed away, or
-  // skipped instantly for reduced motion) — the light should never be visibly
-  // "on" while the red screen is still covering the page.
-  let neonHasBooted = false;
-  startNeonBoot = () => {
-    if (neonHasBooted) return;
-    neonHasBooted = true;
-
-    if (reducedMotion.matches) {
-      settleNeon();
-    } else {
-      neonBar.classList.add("booting");
-      setTimeout(() => {
-        settleNeon();
-        scheduleNeonFlicker();
-      }, 3400);
+    servicesTypedText.textContent += text[index];
+    index += 1;
+    if (index === firstLineLength) {
+      servicesSection?.classList.add("first-line-complete");
     }
+
+    const delay = index === firstLineLength ? 780 : text[index - 1] === "\n" ? 180 : 58;
+    window.setTimeout(typeNextCharacter, delay);
   };
 
-  reducedMotion.addEventListener("change", handleReducedMotionChange);
+  typeNextCharacter();
+};
 
-  document.querySelectorAll('a[href^="#"]').forEach((link) => {
-    link.addEventListener("click", () => {
-      // Navigation-triggered flickers are intentionally uncommon.
-      setTimeout(() => triggerNeonFlicker(0.18), 520);
+if (servicesSection && servicesTypedText) {
+  servicesSection.classList.add("services-motion-ready");
+
+  if (reducedMotion.matches) {
+    servicesSection.classList.add("in-view", "first-line-complete", "typing-complete");
+  } else {
+    servicesTypedText.textContent = "";
+    const servicesObserver = new IntersectionObserver((entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      servicesSection.classList.add("in-view");
+      typeServicesHeading();
+      observer.disconnect();
+    }, { threshold: 0.18 });
+
+    servicesObserver.observe(servicesSection);
+  }
+}
+
+const resetServiceCubes = () => {
+  serviceCubes.forEach((cube) => {
+    if (!cube) return;
+    cube.style.setProperty("--cube-rx", "-7deg");
+    cube.style.setProperty("--cube-ry", "8deg");
+    cube.style.setProperty("--cube-lift", "0px");
+    cube.style.setProperty("--cube-response", "0");
+    cube.closest(".service-number-cube")?.classList.remove("cube-reacting");
+  });
+};
+
+const distanceToRect = (x, y, rect) => {
+  const dx = Math.max(rect.left - x, 0, x - rect.right);
+  const dy = Math.max(rect.top - y, 0, y - rect.bottom);
+  return Math.hypot(dx, dy);
+};
+
+const updateServiceCubes = (clientX, clientY) => {
+  if (!serviceList || serviceButtons.length === 0) return;
+
+  const listRect = serviceList.getBoundingClientRect();
+  const outsideRadius = 170;
+  const nearList =
+    clientX >= listRect.left - outsideRadius &&
+    clientX <= listRect.right + outsideRadius &&
+    clientY >= listRect.top - outsideRadius &&
+    clientY <= listRect.bottom + outsideRadius;
+
+  if (!nearList) {
+    resetServiceCubes();
+    return;
+  }
+
+  const rowRects = serviceButtons.map((button) => button.getBoundingClientRect());
+  const insideIndex = rowRects.findIndex(
+    (rect) =>
+      clientX >= rect.left &&
+      clientX <= rect.right &&
+      clientY >= rect.top &&
+      clientY <= rect.bottom
+  );
+
+  let reactingIndexes = [];
+
+  if (insideIndex >= 0) {
+    reactingIndexes = [insideIndex];
+  } else {
+    const centers = rowRects.map((rect) => rect.top + rect.height / 2);
+    const betweenIndex = centers.findIndex(
+      (center, index) =>
+        index < centers.length - 1 &&
+        clientY >= center &&
+        clientY <= centers[index + 1]
+    );
+
+    reactingIndexes =
+      betweenIndex >= 0
+        ? [betweenIndex, betweenIndex + 1]
+        : [
+            centers.reduce(
+              (nearest, center, index) =>
+                Math.abs(center - clientY) < Math.abs(centers[nearest] - clientY) ? index : nearest,
+              0
+            )
+          ];
+
+    reactingIndexes = reactingIndexes.filter(
+      (index) => distanceToRect(clientX, clientY, rowRects[index]) <= outsideRadius
+    );
+  }
+
+  serviceCubes.forEach((cube, index) => {
+    if (!cube) return;
+    const wrapper = cube.closest(".service-number-cube");
+
+    if (!reactingIndexes.includes(index)) {
+      cube.style.setProperty("--cube-rx", "-7deg");
+      cube.style.setProperty("--cube-ry", "8deg");
+      cube.style.setProperty("--cube-lift", "0px");
+      cube.style.setProperty("--cube-response", "0");
+      wrapper?.classList.remove("cube-reacting");
+      return;
+    }
+
+    const cubeRect = wrapper.getBoundingClientRect();
+    const cubeX = cubeRect.left + cubeRect.width / 2;
+    const cubeY = cubeRect.top + cubeRect.height / 2;
+    const dx = clientX - cubeX;
+    const dy = clientY - cubeY;
+    const distance = Math.max(Math.hypot(dx, dy), 1);
+    const influenceRadius =
+      insideIndex === index ? Math.hypot(rowRects[index].width, rowRects[index].height) * 0.92 : 280;
+    const proximity = Math.max(
+      insideIndex === index ? 0.16 : 0,
+      Math.min(1, 1 - distance / influenceRadius)
+    );
+
+    if (proximity <= 0) {
+      cube.style.setProperty("--cube-rx", "-7deg");
+      cube.style.setProperty("--cube-ry", "8deg");
+      cube.style.setProperty("--cube-lift", "0px");
+      cube.style.setProperty("--cube-response", "0");
+      wrapper?.classList.remove("cube-reacting");
+      return;
+    }
+
+    const maxAngle = 32;
+    const rotateX = Math.max(-38, Math.min(38, -7 - (dy / distance) * maxAngle * proximity));
+    const rotateY = Math.max(-38, Math.min(38, 8 + (dx / distance) * maxAngle * proximity));
+
+    cube.style.setProperty("--cube-rx", `${rotateX.toFixed(2)}deg`);
+    cube.style.setProperty("--cube-ry", `${rotateY.toFixed(2)}deg`);
+    cube.style.setProperty("--cube-lift", `${(-3.5 * proximity).toFixed(2)}px`);
+    cube.style.setProperty("--cube-response", proximity.toFixed(3));
+    wrapper?.classList.add("cube-reacting");
+  });
+};
+
+if (
+  serviceList &&
+  serviceCubes.some(Boolean) &&
+  window.matchMedia("(pointer: fine)").matches &&
+  !reducedMotion.matches
+) {
+  document.addEventListener("pointermove", (event) => {
+    window.cancelAnimationFrame(serviceCubeFrame);
+    serviceCubeFrame = window.requestAnimationFrame(() => {
+      updateServiceCubes(event.clientX, event.clientY);
     });
+  });
+
+  document.addEventListener("pointerleave", resetServiceCubes);
+  window.addEventListener("blur", resetServiceCubes);
+}
+
+const unlockStartup = () => {
+  window.clearTimeout(startupUnlockFallbackTimer);
+  document.documentElement.classList.remove("boot-locked");
+};
+
+const revealHero = () => {
+  if (document.documentElement.classList.contains("hero-ready")) return;
+  window.clearTimeout(heroStartFallbackTimer);
+
+  if (reducedMotion.matches || heroRevealItems.length === 0) {
+    document.documentElement.classList.remove("hero-pending");
+    document.documentElement.classList.add("hero-ready");
+    unlockStartup();
+    return;
+  }
+
+  const completedItems = new Set();
+  const markItemComplete = (event) => {
+    if (event.target !== event.currentTarget) return;
+    completedItems.add(event.currentTarget);
+    if (completedItems.size === heroRevealItems.length) unlockStartup();
+  };
+
+  heroRevealItems.forEach((item) => {
+    item.addEventListener("animationend", markItemComplete, { once: true });
+  });
+
+  document.documentElement.classList.remove("hero-pending");
+  document.documentElement.classList.add("hero-ready");
+  startupUnlockFallbackTimer = window.setTimeout(unlockStartup, 2500);
+};
+
+const scheduleOccasionalFlicker = (delay = 5000 + Math.random() * 6000) => {
+  if (!headerLight || reducedMotion.matches) return;
+
+  window.clearTimeout(occasionalFlickerTimer);
+  occasionalFlickerTimer = window.setTimeout(() => {
+    const flickerClass = occasionalFlickerClasses[
+      Math.floor(Math.random() * occasionalFlickerClasses.length)
+    ];
+    headerLight.classList.add(flickerClass);
+  }, delay);
+};
+
+if (headerLight) {
+  headerLight.addEventListener("animationend", (event) => {
+    if (event.target !== headerLight) return;
+
+    if (event.animationName === "boot") {
+      headerLight.classList.remove("booting");
+      headerLight.classList.add("is-lit");
+      revealHero();
+      scheduleOccasionalFlicker(3500);
+      return;
+    }
+
+    const completedFlicker = occasionalFlickerClasses.find((className) =>
+      headerLight.classList.contains(className)
+    );
+
+    if (completedFlicker) {
+      headerLight.classList.remove(completedFlicker);
+      scheduleOccasionalFlicker();
+    }
   });
 }
 
-/* ===== Boot intro — X mark fades away, then zooms through ===== */
-const bootIntro = document.getElementById("bootIntro");
-const bootCurtain = document.getElementById("bootCurtain");
-const bootMarkCover = document.getElementById("bootMarkCover");
-const bootReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
 if (bootIntro) {
-  const bootAssetUrls = [
-    "assets/brand/boot-symbol-hole.png",
-    "assets/brand/boot-symbol-mask.png",
-  ];
-  const introTimers = new Set();
-  const introCleanups = [];
-  let introFinished = false;
-  let introPhase = "loading";
+  let introComplete = false;
 
-  const setIntroTimer = (callback, delay) => {
-    const timer = setTimeout(() => {
-      introTimers.delete(timer);
-      callback();
-    }, delay);
-
-    introTimers.add(timer);
-    return timer;
+  const readCssTime = (name, fallback) => {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    if (!raw) return fallback;
+    if (raw.endsWith("ms")) return Number.parseFloat(raw);
+    if (raw.endsWith("s")) return Number.parseFloat(raw) * 1000;
+    return fallback;
   };
 
-  const clearIntroResources = () => {
-    introTimers.forEach((timer) => clearTimeout(timer));
-    introTimers.clear();
-    introCleanups.splice(0).forEach((cleanup) => cleanup());
-  };
-
-  const readCssTime = (propertyName, fallbackMs) => {
-    const value = getComputedStyle(document.documentElement)
-      .getPropertyValue(propertyName)
-      .trim();
-
-    if (!value) return fallbackMs;
-    if (value.endsWith("ms")) return Number.parseFloat(value) || fallbackMs;
-    if (value.endsWith("s")) return (Number.parseFloat(value) || 0) * 1000 || fallbackMs;
-    return Number.parseFloat(value) || fallbackMs;
-  };
-
-  const waitForNextPaint = () => new Promise((resolve) => {
-    requestAnimationFrame(() => requestAnimationFrame(resolve));
-  });
-
-  const preloadAndDecodeImage = (src) => new Promise((resolve, reject) => {
+  const preloadImage = (url) => new Promise((resolve, reject) => {
     const image = new Image();
-    let settled = false;
-
-    const finish = (callback, value) => {
-      if (settled) return;
-      settled = true;
-      image.onload = null;
-      image.onerror = null;
-      callback(value);
-    };
-
-    const resolveLoadedImage = async () => {
+    image.onload = async () => {
       try {
-        if (typeof image.decode === "function") {
-          await image.decode();
-        }
-      } catch (error) {
-        // Some browsers reject decode() even after a successful load. The
-        // decoded pixels are still allowed to paint, so loading remains valid.
+        if (image.decode) await image.decode();
+      } catch {
+        // A completed load is enough when decode() is unavailable or rejected.
       }
-
-      finish(resolve, image);
+      resolve();
     };
-
-    image.onload = resolveLoadedImage;
-    image.onerror = () => finish(reject, new Error(`Unable to load intro asset: ${src}`));
-    image.src = src;
-
-    if (image.complete && image.naturalWidth > 0) {
-      resolveLoadedImage();
-    }
+    image.onerror = reject;
+    image.src = url;
   });
 
-  const preloadIntroAssets = () => {
-    const assetPromise = Promise.all(bootAssetUrls.map(preloadAndDecodeImage));
-    const timeoutPromise = new Promise((_, reject) => {
-      setIntroTimer(() => reject(new Error("Intro asset preload timed out.")), 2400);
-    });
-
-    return Promise.race([assetPromise, timeoutPromise]);
-  };
-
-  const finishBootIntro = () => {
-    if (introFinished) return;
-    introFinished = true;
-    introPhase = "intro-complete";
-
-    clearIntroResources();
-    document.documentElement.classList.remove("boot-locked");
+  const finishIntro = () => {
+    if (introComplete) return;
+    introComplete = true;
     bootIntro.remove();
-    startNeonBoot();
+    if (reducedMotion.matches) {
+      headerLight?.classList.add("is-lit");
+      revealHero();
+    } else {
+      headerLight?.classList.add("booting");
+      heroStartFallbackTimer = window.setTimeout(revealHero, 3100);
+    }
   };
 
-  const runSimpleReveal = (className) => {
-    if (introFinished) return;
-    introPhase = className;
+  const expandCutout = () => {
+    if (introComplete) return;
+    bootIntro.classList.add("intro-cutout-expanding");
 
-    const handleRevealEnd = (event) => {
-      if (event.target === bootIntro && event.propertyName === "opacity") {
-        finishBootIntro();
-      }
-    };
-
-    bootIntro.addEventListener("transitionend", handleRevealEnd);
-    introCleanups.push(() => bootIntro.removeEventListener("transitionend", handleRevealEnd));
-
-    requestAnimationFrame(() => bootIntro.classList.add(className));
-    setIntroTimer(finishBootIntro, 420);
-  };
-
-  const startCutoutExpansion = () => {
-    if (introFinished || introPhase === "cutout-expanding") return;
-    introPhase = "cutout-expanding";
-
-    const handleCurtainEnd = (event) => {
+    const finishOnAnimation = (event) => {
       if (event.target === bootCurtain && event.animationName === "boot-curtain-zoom") {
-        finishBootIntro();
+        finishIntro();
       }
     };
 
-    if (bootCurtain) {
-      bootCurtain.addEventListener("animationend", handleCurtainEnd);
-      introCleanups.push(() => bootCurtain.removeEventListener("animationend", handleCurtainEnd));
-    }
-
-    bootIntro.classList.add("intro-cutout-ready", "intro-cutout-expanding");
-
-    const zoomDuration = readCssTime("--intro-cutout-zoom-duration", 1500);
-    setIntroTimer(finishBootIntro, zoomDuration + 350);
+    bootCurtain?.addEventListener("animationend", finishOnAnimation, { once: true });
+    window.setTimeout(finishIntro, readCssTime("--intro-cutout-zoom-duration", 1500) + 350);
   };
 
-  const startLogoFade = () => {
-    if (introFinished || introPhase !== "logo-visible") return;
-    introPhase = "logo-fading";
-
-    const handleLogoFadeEnd = (event) => {
-      if (event.target === bootMarkCover && event.propertyName === "opacity") {
-        startCutoutExpansion();
-      }
-    };
-
-    if (bootMarkCover) {
-      bootMarkCover.addEventListener("transitionend", handleLogoFadeEnd);
-      introCleanups.push(() => bootMarkCover.removeEventListener("transitionend", handleLogoFadeEnd));
-    }
-
+  const fadeLogo = () => {
+    if (introComplete) return;
     bootIntro.classList.add("intro-logo-fading");
 
-    // transitionend is the sequencing source of truth. This timeout is only a
-    // bounded failure-safe for browsers that suppress the event unexpectedly.
-    const fadeDuration = readCssTime("--intro-logo-fade-duration", 800);
-    setIntroTimer(startCutoutExpansion, fadeDuration + 180);
+    const expandOnFade = (event) => {
+      if (event.target === bootMarkCover && event.propertyName === "opacity") {
+        expandCutout();
+      }
+    };
+
+    bootMarkCover?.addEventListener("transitionend", expandOnFade, { once: true });
+    window.setTimeout(expandCutout, readCssTime("--intro-logo-fade-duration", 800) + 180);
   };
 
-  const beginIntroSequence = async () => {
-    document.documentElement.classList.add("boot-locked");
-    bootIntro.classList.add("intro-loading");
-
-    // One bounded global escape hatch ensures no failed asset, animation, or
-    // backgrounded tab can leave the red curtain permanently covering the site.
-    setIntroTimer(() => {
-      if (!introFinished) {
-        console.warn("InboxViewed intro exceeded its safety window; completing the reveal.");
-        finishBootIntro();
-      }
-    }, 6200);
+  window.addEventListener("load", async () => {
+    window.setTimeout(finishIntro, 6200);
 
     try {
-      await preloadIntroAssets();
-      if (introFinished) return;
+      await Promise.all([
+        preloadImage("assets/brand/boot-symbol-hole.png"),
+        preloadImage("assets/brand/boot-symbol-mask.png")
+      ]);
 
+      if (introComplete) return;
       bootIntro.classList.remove("intro-loading");
-      bootIntro.classList.add("intro-assets-ready", "intro-logo-visible");
-      introPhase = "logo-visible";
+      bootIntro.classList.add("intro-assets-ready");
 
-      // Give the decoded mask and white cover a committed paint before any
-      // opacity change. This keeps the two pixel-identical silhouettes locked.
-      await waitForNextPaint();
-      if (introFinished) return;
+      await new Promise((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
+      });
 
-      if (bootReducedMotion.matches) {
-        const reducedHold = Math.min(
-          readCssTime("--intro-logo-hold-duration", 320),
-          220
-        );
-        setIntroTimer(() => runSimpleReveal("intro-reduced-reveal"), reducedHold);
+      if (reducedMotion.matches) {
+        bootIntro.classList.add("intro-reduced-reveal");
+        window.setTimeout(finishIntro, 240);
         return;
       }
 
-      const logoHoldDuration = readCssTime("--intro-logo-hold-duration", 320);
-      setIntroTimer(startLogoFade, logoHoldDuration);
-    } catch (error) {
-      console.warn("InboxViewed intro assets could not be prepared; using a simplified reveal.", error);
-      runSimpleReveal("intro-fallback-reveal");
+      window.setTimeout(fadeLogo, readCssTime("--intro-logo-hold-duration", 320));
+    } catch {
+      bootIntro.classList.add("intro-fallback-reveal");
+      window.setTimeout(finishIntro, 240);
+    }
+  });
+} else if (headerLight) {
+  headerLight.classList.add("is-lit");
+  revealHero();
+  scheduleOccasionalFlicker();
+} else {
+  revealHero();
+}
+
+window.addEventListener("pageshow", () => {
+  window.scrollTo(0, 0);
+}, { once: true });
+
+menuButton.addEventListener("click", () => {
+  const isOpen = navigation.classList.toggle("nav-open");
+  menuButton.setAttribute("aria-expanded", String(isOpen));
+});
+
+navigation.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => {
+    navigation.classList.remove("nav-open");
+    menuButton.setAttribute("aria-expanded", "false");
+  });
+});
+
+const selectService = (button) => {
+  const index = Number(button.dataset.service);
+  const selected = services[index];
+  const serviceNumber = String(index + 1).padStart(2, "0");
+
+  serviceButtons.forEach((item) => {
+    const active = item === button;
+    item.classList.toggle("active", active);
+    item.setAttribute("aria-selected", String(active));
+    item.setAttribute("tabindex", active ? "0" : "-1");
+  });
+
+  serviceDetail?.setAttribute("aria-labelledby", button.id);
+  serviceIcon.innerHTML = selected.icon;
+  document.querySelector("#service-meta").textContent = `Service ${serviceNumber} · Opened`;
+  document.querySelector("#service-title").textContent = selected.title;
+  document.querySelector("#service-copy").textContent = selected.copy;
+  document.querySelector("#service-extra").textContent = selected.extra;
+  document.querySelector("#service-count").textContent = `${serviceNumber} / 05`;
+  servicePoints.innerHTML = selected.points.map((point) => `<li>${point}</li>`).join("");
+
+  if (!reducedMotion.matches && serviceDetail) {
+    serviceDetail.classList.remove("service-detail-refresh");
+    void serviceDetail.offsetWidth;
+    serviceDetail.classList.add("service-detail-refresh");
+  }
+};
+
+serviceButtons.forEach((button, buttonIndex) => {
+  button.addEventListener("click", () => selectService(button));
+  button.addEventListener("keydown", (event) => {
+    if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+
+    let nextIndex = buttonIndex;
+    if (event.key === "ArrowDown") nextIndex = (buttonIndex + 1) % serviceButtons.length;
+    if (event.key === "ArrowUp") nextIndex = (buttonIndex - 1 + serviceButtons.length) % serviceButtons.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = serviceButtons.length - 1;
+
+    serviceButtons[nextIndex].focus();
+    selectService(serviceButtons[nextIndex]);
+  });
+});
+
+auditControls.forEach((control) => {
+  control.addEventListener("click", () => {
+    const index = control.dataset.audit;
+    auditControls.forEach((item) => item.classList.toggle("active", item.dataset.audit === index));
+  });
+});
+
+const countAuditScore = () => {
+  if (!auditScoreValue || auditRevealStarted) return;
+  auditRevealStarted = true;
+
+  if (reducedMotion.matches) {
+    auditScoreValue.textContent = "42";
+    return;
+  }
+
+  const finalScore = 42;
+  const duration = 1050;
+  const startTime = performance.now();
+
+  const updateScore = (currentTime) => {
+    const progress = Math.min((currentTime - startTime) / duration, 1);
+    const easedProgress = 1 - Math.pow(1 - progress, 3);
+    auditScoreValue.textContent = String(Math.round(finalScore * easedProgress));
+
+    if (progress < 1) {
+      window.requestAnimationFrame(updateScore);
     }
   };
 
-  beginIntroSequence();
-} else {
-  // No boot intro present on the page for some reason — start the light normally.
-  startNeonBoot();
+  window.requestAnimationFrame(updateScore);
+};
+
+if (auditSection && auditScoreValue) {
+  auditSection.classList.add("audit-motion-ready");
+
+  if (reducedMotion.matches) {
+    auditSection.classList.add("in-view");
+    countAuditScore();
+  } else {
+    auditScoreValue.textContent = "0";
+    const auditObserver = new IntersectionObserver((entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      auditSection.classList.add("in-view");
+      window.setTimeout(countAuditScore, 2380);
+      observer.disconnect();
+    }, { threshold: 0.16 });
+
+    auditObserver.observe(auditSection);
+  }
 }
 
-/* ===== Mobile nav toggle ===== */
-const menuBtn = document.getElementById("menuBtn");
-const navLinks = document.getElementById("navLinks");
+if (teamSection) {
+  teamSection.classList.add("team-motion-ready");
 
-menuBtn.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
-});
+  if (reducedMotion.matches) {
+    teamSection.classList.add("in-view");
+  } else {
+    const teamObserver = new IntersectionObserver((entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      teamSection.classList.add("in-view");
+      observer.disconnect();
+    }, { threshold: 0.14 });
 
-navLinks.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => {
-    navLinks.classList.remove("active");
-  });
-});
-
-/* ===== Scroll reveal ===== */
-const revealSections = document.querySelectorAll(".reveal");
-const revealRows = document.querySelectorAll(".reveal-row");
-
-function revealOnScroll() {
-  revealSections.forEach((element) => {
-    const elementTop = element.getBoundingClientRect().top;
-    const windowHeight = window.innerHeight;
-
-    if (elementTop < windowHeight - 100) {
-      element.classList.add("active");
-    }
-  });
-
-  revealRows.forEach((element) => {
-    const elementTop = element.getBoundingClientRect().top;
-    const windowHeight = window.innerHeight;
-
-    if (elementTop < windowHeight - 100) {
-      element.classList.add("in-view");
-    }
-  });
-}
-setTimeout(revealOnScroll, 100);
-
-window.addEventListener("scroll", revealOnScroll);
-window.addEventListener("load", revealOnScroll);
-
-/* ===== Custom cursor ===== */
-const customCursor = document.querySelector(".custom-cursor");
-const cursorGlow = document.querySelector(".cursor-glow");
-const hoverElements = document.querySelectorAll(
-  "a, button, .mail-item, .post-card, .contact-card, .review-card, .client-badge, input, textarea"
-);
-
-document.addEventListener("mousemove", (event) => {
-  customCursor.style.left = `${event.clientX}px`;
-  customCursor.style.top = `${event.clientY}px`;
-
-  cursorGlow.style.left = `${event.clientX}px`;
-  cursorGlow.style.top = `${event.clientY}px`;
-});
-
-hoverElements.forEach((element) => {
-  element.addEventListener("mouseenter", () => {
-    customCursor.classList.add("hover");
-  });
-
-  element.addEventListener("mouseleave", () => {
-    customCursor.classList.remove("hover");
-  });
-});
-
-/* ===== Work — post image sliders ===== */
-const postCards = document.querySelectorAll(".post-card");
-
-postCards.forEach((card) => {
-  const track = card.querySelector(".post-track");
-  const images = card.querySelectorAll(".post-track img");
-  let index = 0;
-
-  setInterval(() => {
-    index = (index + 1) % images.length;
-    track.style.transform = `translateX(-${index * 100}%)`;
-  }, 3000);
-});
-
-/* ===== Hero attachment image slider ===== */
-const heroImages = document.querySelectorAll(".hero-img");
-let heroImageIndex = 0;
-
-if (heroImages.length) {
-  setInterval(() => {
-    heroImages[heroImageIndex].classList.remove("active");
-    heroImageIndex = (heroImageIndex + 1) % heroImages.length;
-    heroImages[heroImageIndex].classList.add("active");
-  }, 3500);
+    teamObserver.observe(teamSection);
+  }
 }
 
-/* ===== Services — Outlook-style mail app ===== */
-const mailItems = document.querySelectorAll(".mail-item");
-const mailReadings = document.querySelectorAll(".mail-reading");
+[aboutSection, contactSection].forEach((section) => {
+  if (!section) return;
 
-mailItems.forEach((item) => {
-  item.setAttribute("aria-pressed", item.classList.contains("active") ? "true" : "false");
+  section.classList.add(section === aboutSection ? "about-motion-ready" : "contact-motion-ready");
 
-  item.addEventListener("click", () => {
-    const service = item.dataset.service;
+  if (reducedMotion.matches) {
+    section.classList.add("in-view");
+    return;
+  }
 
-    mailItems.forEach((i) => {
-      i.classList.remove("active");
-      i.setAttribute("aria-pressed", "false");
-    });
-    item.classList.add("active");
-    item.setAttribute("aria-pressed", "true");
+  const sectionObserver = new IntersectionObserver((entries, observer) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    section.classList.add("in-view");
+    observer.disconnect();
+  }, { threshold: 0.14 });
 
-    mailReadings.forEach((reading) => {
-      reading.classList.toggle("active", reading.dataset.service === service);
-    });
-  });
+  sectionObserver.observe(section);
 });
-
-/* ===== Team photo — hover reveal ===== */
-const teamPhotoWrap = document.getElementById("teamPhotoWrap");
 
 if (teamPhotoWrap) {
-  const hotspots = Array.from(teamPhotoWrap.querySelectorAll(".photo-hotspot"));
-  const photoCards = Array.from(teamPhotoWrap.querySelectorAll(".photo-card"));
+  const hotspots = [...teamPhotoWrap.querySelectorAll(".photo-hotspot")];
+  const photoCards = [...teamPhotoWrap.querySelectorAll(".photo-card")];
   let activePerson = null;
   let activeHotspot = null;
   let activeCard = null;
-  let hidePhotoCardTimer = null;
+  let hideTimer = null;
 
-  const clearHidePhotoCardTimer = () => {
-    clearTimeout(hidePhotoCardTimer);
-    hidePhotoCardTimer = null;
+  const clearHideTimer = () => {
+    window.clearTimeout(hideTimer);
+    hideTimer = null;
   };
 
   const getInteractionPerson = (element) => {
     if (!(element instanceof Element)) return null;
-
     const hotspot = element.closest(".photo-hotspot");
     if (hotspot && teamPhotoWrap.contains(hotspot)) return hotspot.dataset.person;
-
     const card = element.closest(".photo-card");
     if (card && teamPhotoWrap.contains(card)) return card.dataset.card;
-
     return null;
   };
 
-  const clearPhotoCardState = (exceptPerson = null) => {
+  const setPhotoState = (person = null) => {
     hotspots.forEach((hotspot) => {
-      const isException = hotspot.dataset.person === exceptPerson;
-      hotspot.classList.toggle("active", isException);
-      hotspot.setAttribute("aria-expanded", isException ? "true" : "false");
+      const active = hotspot.dataset.person === person;
+      hotspot.classList.toggle("active", active);
+      hotspot.setAttribute("aria-expanded", String(active));
     });
 
     photoCards.forEach((card) => {
-      const isException = card.dataset.card === exceptPerson;
-      card.classList.toggle("visible", isException);
-      card.setAttribute("aria-hidden", isException ? "false" : "true");
+      const active = card.dataset.card === person;
+      card.classList.toggle("visible", active);
+      card.setAttribute("aria-hidden", String(!active));
     });
   };
 
   const showPhotoCard = (hotspot) => {
     const person = hotspot.dataset.person;
     const card = teamPhotoWrap.querySelector(`.photo-card[data-card="${person}"]`);
-
     if (!card) return;
 
-    clearHidePhotoCardTimer();
-    clearPhotoCardState(person);
-
+    clearHideTimer();
+    setPhotoState(person);
     activePerson = person;
     activeHotspot = hotspot;
     activeCard = card;
-
     teamPhotoWrap.style.setProperty("--hx", hotspot.dataset.x);
     teamPhotoWrap.style.setProperty("--hy", hotspot.dataset.y);
     teamPhotoWrap.classList.add("revealing");
   };
 
-  const closeActivePhotoCard = () => {
-    clearHidePhotoCardTimer();
-    clearPhotoCardState();
+  const closePhotoCard = () => {
+    clearHideTimer();
+    setPhotoState();
     teamPhotoWrap.classList.remove("revealing");
-
     activePerson = null;
     activeHotspot = null;
     activeCard = null;
   };
 
-  const activeInteractionContains = (element) => {
-    return Boolean(activePerson && getInteractionPerson(element) === activePerson);
-  };
-
-  const scheduleActivePhotoCardClose = (event) => {
-    if (!activePerson || activeInteractionContains(event?.relatedTarget)) return;
-
-    clearHidePhotoCardTimer();
+  const schedulePhotoCardClose = (event) => {
+    if (!activePerson || getInteractionPerson(event?.relatedTarget) === activePerson) return;
+    clearHideTimer();
     const personAtSchedule = activePerson;
 
-    hidePhotoCardTimer = setTimeout(() => {
+    hideTimer = window.setTimeout(() => {
       if (activePerson !== personAtSchedule) return;
-
       const focusedElement = document.activeElement;
       const pointerStillInside =
         (activeHotspot && activeHotspot.matches(":hover")) ||
         (activeCard && activeCard.matches(":hover"));
       const focusStillInside =
-        (activeHotspot && activeHotspot === focusedElement) ||
+        activeHotspot === focusedElement ||
         (activeCard && activeCard.contains(focusedElement));
 
-      if (!pointerStillInside && !focusStillInside) {
-        closeActivePhotoCard();
-      }
+      if (!pointerStillInside && !focusStillInside) closePhotoCard();
     }, 90);
   };
 
   hotspots.forEach((hotspot) => {
     hotspot.setAttribute("aria-expanded", "false");
-
     hotspot.addEventListener("pointerenter", () => showPhotoCard(hotspot));
     hotspot.addEventListener("focus", () => showPhotoCard(hotspot));
-    hotspot.addEventListener("pointerleave", scheduleActivePhotoCardClose);
-    hotspot.addEventListener("blur", scheduleActivePhotoCardClose);
-
-    // Touch devices: tap to toggle since there's no hover state
+    hotspot.addEventListener("pointerleave", schedulePhotoCardClose);
+    hotspot.addEventListener("blur", schedulePhotoCardClose);
     hotspot.addEventListener("click", (event) => {
       event.preventDefault();
-      const person = hotspot.dataset.person;
-
-      if (activePerson === person) {
-        closeActivePhotoCard();
-      } else {
-        showPhotoCard(hotspot);
-      }
+      if (activePerson === hotspot.dataset.person) closePhotoCard();
+      else showPhotoCard(hotspot);
     });
   });
 
   photoCards.forEach((card) => {
     card.setAttribute("aria-hidden", "true");
-
     card.addEventListener("pointerenter", () => {
-      clearHidePhotoCardTimer();
-
+      clearHideTimer();
       if (activePerson !== card.dataset.card) {
         const hotspot = hotspots.find((item) => item.dataset.person === card.dataset.card);
         if (hotspot) showPhotoCard(hotspot);
       }
     });
-    card.addEventListener("pointerleave", scheduleActivePhotoCardClose);
-    card.addEventListener("focusin", clearHidePhotoCardTimer);
-    card.addEventListener("focusout", scheduleActivePhotoCardClose);
+    card.addEventListener("pointerleave", schedulePhotoCardClose);
+    card.addEventListener("focusin", clearHideTimer);
+    card.addEventListener("focusout", schedulePhotoCardClose);
   });
 
-  teamPhotoWrap.addEventListener("pointerleave", scheduleActivePhotoCardClose);
-  teamPhotoWrap.addEventListener("pointercancel", closeActivePhotoCard);
+  teamPhotoWrap.addEventListener("pointerleave", schedulePhotoCardClose);
+  teamPhotoWrap.addEventListener("pointercancel", closePhotoCard);
 }
 
-/* ===== Audit teardown — marks + notes ===== */
-const marks = document.querySelectorAll(".mark");
-const notes = document.querySelectorAll(".note");
+const customCursor = document.querySelector(".custom-cursor");
+const cursorGlow = document.querySelector(".cursor-glow");
 
-function setActiveMark(id) {
-  notes.forEach((note) => {
-    note.classList.toggle("active", note.dataset.mark === id);
+if (customCursor && cursorGlow && window.matchMedia("(pointer: fine)").matches) {
+  document.documentElement.classList.add("custom-cursor-enabled");
+
+  document.addEventListener("pointermove", (event) => {
+    customCursor.style.left = `${event.clientX}px`;
+    customCursor.style.top = `${event.clientY}px`;
+    cursorGlow.style.left = `${event.clientX}px`;
+    cursorGlow.style.top = `${event.clientY}px`;
+    customCursor.classList.add("visible");
+    cursorGlow.classList.add("visible");
+  });
+
+  document.addEventListener("pointerover", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    customCursor.classList.toggle(
+      "hover",
+      Boolean(target?.closest(
+        "a, button, input, textarea, select, label, [role='button'], [tabindex]:not([tabindex='-1']), .social-card"
+      ))
+    );
+  });
+
+  document.addEventListener("pointerleave", () => {
+    customCursor.classList.remove("visible", "hover");
+    cursorGlow.classList.remove("visible");
   });
 }
 
-marks.forEach((mark) => {
-  mark.addEventListener("click", () => {
-    const id = mark.textContent.trim();
-    setActiveMark(id);
-    const note = document.querySelector(`.note[data-mark="${id}"]`);
-    if (note) note.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  });
-});
-
-/* ===== Compose form — mailto handoff ===== */
-const composeForm = document.getElementById("composeForm");
-
-if (composeForm) {
-  composeForm.addEventListener("submit", (event) => {
+if (contactForm && contactSubmitButton && contactFormStatus) {
+  contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const subject = document.getElementById("composeSubject").value;
-    const message = document.getElementById("composeMessage").value;
+    const originalButtonText = contactSubmitButton.textContent;
+    contactSubmitButton.disabled = true;
+    contactSubmitButton.textContent = "Sending...";
+    contactFormStatus.textContent = "Sending securely";
+    contactFormStatus.classList.remove("success", "error");
 
-    const mailto = `mailto:service@enigmail.space?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(message)}`;
+    try {
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        body: new FormData(contactForm),
+        headers: { Accept: "application/json" }
+      });
+      const result = await response.json();
+      const sent = response.ok && (result.success === true || result.success === "true");
 
-    window.location.href = mailto;
+      if (!sent) throw new Error("The inquiry could not be delivered.");
+
+      contactForm.reset();
+      contactFormStatus.textContent = "Inquiry sent - we'll reply by email";
+      contactFormStatus.classList.add("success");
+    } catch (error) {
+      contactFormStatus.textContent = "Could not send - please try again";
+      contactFormStatus.classList.add("error");
+    } finally {
+      contactSubmitButton.disabled = false;
+      contactSubmitButton.textContent = originalButtonText;
+    }
   });
 }

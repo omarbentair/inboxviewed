@@ -1,20 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" class="hero-pending boot-locked">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InboxViewed — Custom-Coded Email Systems for Ecommerce</title>
-  <meta name="description" content="InboxViewed builds custom-coded email systems for ecommerce brands who've outgrown templates. Retention audits, hand-built HTML, Figma design, and full-scale Klaviyo management." />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="assets/brand/favicon-32.png" sizes="32x32">
-  <link rel="icon" type="image/png" href="assets/brand/favicon-512.png" sizes="512x512">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="InboxViewed builds custom-coded email systems for ecommerce brands that have outgrown templates.">
+  <meta name="theme-color" content="#050505">
+  <title>InboxViewed - Delivered means nothing. Viewed means something.</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=League+Spartan:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+  </script>
+  <noscript><style>html,html body{overflow:auto!important;overscroll-behavior:auto!important}html body{position:static!important}.boot-intro{display:none!important}.hero-reveal{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
+  <script src="script.js" defer></script>
 </head>
 <body>
-
-  <!-- ===== BOOT INTRO — red curtain, X mark fades away, then zooms through ===== -->
   <div class="boot-intro intro-loading" id="bootIntro" aria-hidden="true">
     <svg class="boot-curtain" id="bootCurtain" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
@@ -28,655 +32,291 @@
     <div class="boot-mark-cover" id="bootMarkCover"></div>
   </div>
 
-  <div class="cursor-glow"></div>
-  <div class="custom-cursor"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="custom-cursor" aria-hidden="true"></div>
 
-  <!-- ===== TOOLBAR / HEADER ===== -->
-  <header class="toolbar">
-    <div class="brand">
-      <img src="assets/brand/logo-mark.png" alt="InboxViewed mark" class="brand-mark" />
-      <span>InboxViewed</span>
-    </div>
-
-    <nav class="nav-tabs" id="navLinks">
-      <a href="#services"><span class="tab-dot"></span>Services</a>
-      <a href="#audit"><span class="tab-dot"></span>Audit</a>
-      <a href="#work"><span class="tab-dot"></span>Work</a>
-      <a href="#reviews"><span class="tab-dot"></span>Reviews</a>
-      <a href="#about"><span class="tab-dot"></span>About</a>
-      <a href="#team"><span class="tab-dot"></span>Team</a>
-      <a href="#contact" class="nav-cta">Contact</a>
+  <header>
+    <a class="brand" href="#top">
+      <img src="assets/brand/logo-mark.png" alt="" aria-hidden="true">
+      <b>InboxViewed</b>
+    </a>
+    <nav id="main-navigation" aria-label="Main navigation">
+      <a href="#services">Services</a>
+      <a href="#audit">Audit</a>
+      <a href="#team">Team</a>
+      <a href="#about">About</a>
     </nav>
-
-    <button class="menu-btn" id="menuBtn" aria-label="Open navigation menu">☰</button>
-    <div class="neon-bar" id="neonBar" aria-hidden="true"></div>
+    <a class="header-cta" href="#contact">Get your audit <span>↗</span></a>
+    <button class="menu" type="button" aria-label="Toggle navigation" aria-controls="main-navigation" aria-expanded="false">
+      <i></i><i></i>
+    </button>
+    <span class="light"></span>
   </header>
 
   <main>
-
-    <!-- ===== HERO — "opened email" ===== -->
-    <section class="hero reveal">
-
-      <div class="inbox-stack" aria-hidden="true">
-        <div class="stack-row">
-          <span class="stack-dot"></span>
-          <span class="stack-sender">Retention Audit</span>
-          <span class="stack-subject">Your emails are losing sales — here's why</span>
-          <span class="stack-time">Now</span>
+    <section class="hero shell" id="top">
+      <div class="hero-copy">
+        <div class="meta hero-reveal hero-reveal-left" style="--hero-delay:.06s">
+          <span>From: InboxViewed</span>
+          <span>Status: Unread <i></i></span>
         </div>
-        <div class="stack-row">
-          <span class="stack-dot read"></span>
-          <span class="stack-sender">Klaviyo Ops</span>
-          <span class="stack-subject">Flow performance report — flows optimized</span>
-          <span class="stack-time">1d</span>
+        <h1 class="hero-reveal hero-reveal-left" style="--hero-delay:.16s">Delivered means nothing.<br><em>Viewed means something.</em></h1>
+        <p class="hero-reveal hero-reveal-up" style="--hero-delay:.38s">Custom-coded email systems for ecommerce brands who've outgrown templates.</p>
+        <div class="buttons hero-reveal hero-reveal-up" style="--hero-delay:.49s">
+          <a class="btn red" href="#audit">View audit examples</a>
+          <a class="btn ghost" href="#contact">Get an audit</a>
         </div>
-        <div class="stack-row">
-          <span class="stack-dot"></span>
-          <span class="stack-sender">Studio Build</span>
-          <span class="stack-subject">Hand-coded HTML, shipped and tested</span>
-          <span class="stack-time">2d</span>
-        </div>
+        <small class="hero-reveal hero-reveal-up" style="--hero-delay:.6s"><i></i> Strategy, design, copy, and code - built as one system.</small>
       </div>
 
-      <article class="email-open">
-        <div class="email-open-head">
-          <div class="email-avatar">IV</div>
-          <div class="email-meta">
-            <p class="email-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
-            <p class="email-to">to: brands who've outgrown templates</p>
-          </div>
-          <span class="email-tag">Unread</span>
-        </div>
-
-        <h1>Delivered means nothing.<br>Viewed means something.</h1>
-
-        <p class="hero-text">
-          We build custom-coded email systems for ecommerce brands who've outgrown templates —
-          pairing elite design and copy with hand-built HTML architecture, retention audits,
-          premium Figma layouts, and full-scale Klaviyo management.
-        </p>
-
-        <div class="hero-buttons">
-          <a href="#audit" class="btn primary">Get an Audit</a>
-          <a href="#work" class="btn secondary">See the Work</a>
-        </div>
-
-        <div class="email-attachment">
-          <div class="hero-image-slider">
-            <img src="assets/hero/1.webp" class="hero-img active" alt="InboxViewed design concept 1">
-            <img src="assets/hero/2.webp" class="hero-img" alt="InboxViewed design concept 2">
-          </div>
-          <p class="attachment-label">attachment — preview.webp</p>
-        </div>
-      </article>
-    </section>
-
-    <!-- ===== SERVICES — Outlook-style mail app ===== -->
-    <section class="services reveal" id="services">
-      <p class="eyebrow">Inbox — Services</p>
-      <h2>What we build</h2>
-
-      <div class="mail-app">
-
-        <aside class="mail-sidebar" aria-label="Service mailbox folders">
-          <div class="mail-sidebar-brand">
-            <img src="assets/brand/logo-mark.png" alt="" />
-            <span>InboxViewed Mail</span>
-          </div>
-
-          <a href="#contact" class="compose-mini">+ New project</a>
-
-          <div class="mail-folders">
-            <button class="mail-folder active" type="button" aria-current="page">
-              <span>▣ Inbox</span>
-              <span>5</span>
-            </button>
-            <button class="mail-folder" type="button">☆ Priority</button>
-            <button class="mail-folder" type="button">✓ Delivered</button>
-            <button class="mail-folder" type="button">⌁ Archive</button>
-          </div>
-        </aside>
-
-        <div class="mail-list" id="serviceList" aria-label="Service emails">
-
-          <button class="mail-item reveal-row active" data-service="audit">
-            <span class="mail-item-dot"></span>
-            <div class="mail-item-avatar">RA</div>
-            <div class="mail-item-body">
-              <p class="mail-item-subject">Retention Audits</p>
-              <p class="mail-item-preview">We tear down your existing flows and campaigns to find exactly where conversions leak.</p>
-            </div>
-            <span class="mail-item-tag">AUDIT</span>
-          </button>
-
-          <button class="mail-item reveal-row" data-service="figma">
-            <span class="mail-item-dot"></span>
-            <div class="mail-item-avatar">FG</div>
-            <div class="mail-item-body">
-              <p class="mail-item-subject">Premium Figma Design</p>
-              <p class="mail-item-preview">Layouts built to convert first — engineered to render pixel-perfect second.</p>
-            </div>
-            <span class="mail-item-tag">FIGMA</span>
-          </button>
-
-          <button class="mail-item reveal-row" data-service="html">
-            <span class="mail-item-dot"></span>
-            <div class="mail-item-avatar">HC</div>
-            <div class="mail-item-body">
-              <p class="mail-item-subject">Hand-Coded HTML</p>
-              <p class="mail-item-preview">No templates, no drag-and-drop builders. Custom architecture that renders clean everywhere.</p>
-            </div>
-            <span class="mail-item-tag">HTML</span>
-          </button>
-
-          <button class="mail-item reveal-row" data-service="klaviyo">
-            <span class="mail-item-dot"></span>
-            <div class="mail-item-avatar">KL</div>
-            <div class="mail-item-body">
-              <p class="mail-item-subject">Klaviyo Management</p>
-              <p class="mail-item-preview">Full-scale flow and campaign management, built and optimized inside your account.</p>
-            </div>
-            <span class="mail-item-tag">KLAVIYO</span>
-          </button>
-
-          <button class="mail-item reveal-row" data-service="ai">
-            <span class="mail-item-dot"></span>
-            <div class="mail-item-avatar">AI</div>
-            <div class="mail-item-body">
-              <p class="mail-item-subject">Email AI Flows</p>
-              <p class="mail-item-preview">AI-assisted flow logic that reacts to customer behavior instead of a fixed timer.</p>
-            </div>
-            <span class="mail-item-tag">AI</span>
-          </button>
-
-        </div>
-
-        <div class="mail-reading-pane" id="serviceReader">
-          <div class="reader-toolbar" aria-label="Message actions">
-            <button type="button" aria-label="Reply">↩</button>
-            <button type="button" aria-label="Mark as priority">☆</button>
-            <button type="button" aria-label="Archive">⌁</button>
-            <button type="button" aria-label="More actions">⋯</button>
-          </div>
-
-          <article class="mail-reading active" data-service="audit" tabindex="-1">
-            <div class="mail-reading-head">
-              <div class="mail-reading-avatar">RA</div>
-              <div class="mail-reading-meta">
-                <p class="mail-reading-subject">Retention Audits</p>
-                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
-              </div>
-              <span class="mail-reading-tag">AUDIT</span>
-            </div>
-            <div class="mail-reading-body">
-              <p>
-                We tear down your existing flows and campaigns email by email — welcome, abandoned cart,
-                post-purchase, win-back, browse abandonment — and score every one against open rate, click
-                rate, conversion rate, and revenue per recipient.
-              </p>
-              <ul>
-                <li>Full flow-by-flow and campaign-by-campaign performance review</li>
-                <li>Segmentation and deliverability health check</li>
-                <li>Design and mobile-responsiveness audit</li>
-                <li>A prioritized list of exactly what's leaking revenue, and why</li>
-              </ul>
-            </div>
-            <a href="#contact" class="btn primary reading-cta">Reply — Get an Audit</a>
-          </article>
-
-          <article class="mail-reading" data-service="figma" tabindex="-1">
-            <div class="mail-reading-head">
-              <div class="mail-reading-avatar">FG</div>
-              <div class="mail-reading-meta">
-                <p class="mail-reading-subject">Premium Figma Design</p>
-                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
-              </div>
-              <span class="mail-reading-tag">FIGMA</span>
-            </div>
-            <div class="mail-reading-body">
-              <p>
-                Layouts built with hierarchy, imagery, typography, and spacing that match your brand —
-                designed for both desktop and mobile widths from the first frame.
-              </p>
-              <ul>
-                <li>Modular, reusable header / product-grid / footer components</li>
-                <li>Faster future builds using a shared component system</li>
-                <li>Consistent with your existing brand asset library</li>
-                <li>Ready to hand straight to development — no guesswork</li>
-              </ul>
-            </div>
-            <a href="#contact" class="btn primary reading-cta">Reply — Start a Design</a>
-          </article>
-
-          <article class="mail-reading" data-service="html" tabindex="-1">
-            <div class="mail-reading-head">
-              <div class="mail-reading-avatar">HC</div>
-              <div class="mail-reading-meta">
-                <p class="mail-reading-subject">Hand-Coded HTML</p>
-                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
-              </div>
-              <span class="mail-reading-tag">HTML</span>
-            </div>
-            <div class="mail-reading-body">
-              <p>
-                No templates, no drag-and-drop builders. We hand-write table-based, inlined-CSS HTML because
-                that's what actually renders clean in Outlook, Gmail, Apple Mail, and Yahoo — not just the
-                preview pane.
-              </p>
-              <ul>
-                <li>Dark-mode compatible from the start</li>
-                <li>Tested across dozens of real email clients before send</li>
-                <li>Built to survive being forwarded, printed, and clipped</li>
-                <li>The step that separates a custom build from a template</li>
-              </ul>
-            </div>
-            <a href="#contact" class="btn primary reading-cta">Reply — Build It Custom</a>
-          </article>
-
-          <article class="mail-reading" data-service="klaviyo" tabindex="-1">
-            <div class="mail-reading-head">
-              <div class="mail-reading-avatar">KL</div>
-              <div class="mail-reading-meta">
-                <p class="mail-reading-subject">Klaviyo Management</p>
-                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
-              </div>
-              <span class="mail-reading-tag">KLAVIYO</span>
-            </div>
-            <div class="mail-reading-body">
-              <p>
-                Full-scale flow and campaign management built and optimized inside your own Klaviyo account —
-                triggers, delays, conditional splits, segments, and QA, end to end.
-              </p>
-              <ul>
-                <li>Flow builder logic — "if clicked, send X; if not, send Y"</li>
-                <li>Audience segmentation and targeting setup</li>
-                <li>End-to-end QA before every flow goes live</li>
-                <li>Ongoing optimization based on real performance data</li>
-              </ul>
-            </div>
-            <a href="#contact" class="btn primary reading-cta">Reply — Manage My Klaviyo</a>
-          </article>
-
-          <article class="mail-reading" data-service="ai" tabindex="-1">
-            <div class="mail-reading-head">
-              <div class="mail-reading-avatar">AI</div>
-              <div class="mail-reading-meta">
-                <p class="mail-reading-subject">Email AI Flows</p>
-                <p class="mail-reading-from">InboxViewed <span>&lt;hello@inboxviewed.com&gt;</span></p>
-              </div>
-              <span class="mail-reading-tag">AI</span>
-            </div>
-            <div class="mail-reading-body">
-              <p>
-                AI-assisted flow logic that reacts to actual customer behavior instead of running on a fixed
-                timer — so the right email goes out at the right moment, not just three days later.
-              </p>
-              <ul>
-                <li>Behavior-based send-time and content decisions</li>
-                <li>Layered on top of your existing Klaviyo flows</li>
-                <li>Built to complement hand-coded HTML, not replace it</li>
-                <li>Early-stage offering — happy to walk through what's possible</li>
-              </ul>
-            </div>
-            <a href="#contact" class="btn primary reading-cta">Reply — Ask About AI Flows</a>
-          </article>
-
+      <div class="canvas">
+        <article class="featured hero-reveal hero-reveal-right" style="--hero-delay:.58s">
+          <div class="module-label"><span>Featured signal</span><span>01 / 01</span></div>
+          <img src="assets/posts/current-post-2/03-phone-notification.webp" alt="Phone displaying an InboxViewed retention strategy notification">
+          <div class="module-label"><b>InboxViewed</b><span>Retention system · 2026</span></div>
+        </article>
+        <div class="capabilities">
+          <a href="#services" class="cap-card hero-reveal hero-reveal-capability" style="--hero-delay:1.1s">
+            <span class="cap-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 20 8.8 18.8 19 8.6a2.1 2.1 0 0 0 0-3L18.4 5a2.1 2.1 0 0 0-3 0L5.2 15.2 4 20Z"></path><path d="m13.8 6.6 3.6 3.6M5.2 15.2l3.6 3.6"></path></svg>
+            </span>
+            <div><b>Premium Figma Design</b><small>Pixel-perfect layouts built around your brand, your offer, and the way real customers read.</small></div>
+            <i>↗</i>
+          </a>
+          <a href="#services" class="cap-card hero-reveal hero-reveal-capability" style="--hero-delay:.96s">
+            <span class="cap-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m8 5-6 7 6 7M16 5l6 7-6 7M14 3l-4 18"></path></svg>
+            </span>
+            <div><b>Hand-Coded HTML</b><small>No templates and no builder limitations. Clean email architecture made to render everywhere.</small></div>
+            <i>↗</i>
+          </a>
+          <a href="#services" class="cap-card hero-reveal hero-reveal-capability" style="--hero-delay:.82s">
+            <span class="cap-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 5h12M6 12h12M6 19h12"></path><circle cx="9" cy="5" r="2"></circle><circle cx="15" cy="12" r="2"></circle><circle cx="11" cy="19" r="2"></circle></svg>
+            </span>
+            <div><b>Klaviyo Management</b><small>Flows, campaigns, segmentation, QA, and optimization managed as one system.</small></div>
+            <i>↗</i>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- ===== AUDIT TEARDOWN ===== -->
-    <section class="audit reveal" id="audit">
-      <p class="eyebrow">Sample Audit</p>
-      <h2>This email is losing sales. Here's why.</h2>
-      <p class="section-text">
-        A real breakdown of the kind of issues we find in the first five minutes of an audit.
-        Every one of these is a customer who almost converted, but didn't.
-      </p>
-
-      <div class="teardown">
-        <div class="teardown-mock">
-
-          <div class="mock-header">
-            <span class="mock-logo">BRAND CO.</span>
-            <span class="mock-nav">Shop · New · Sale</span>
-          </div>
-
-          <div class="mock-hero">
-            <span class="mock-hero-title">SUMMER SALE IS HERE</span>
-            <span class="mock-hero-sub">up to 40% off select styles for a limited time only, don't miss out on these incredible savings while supplies last</span>
-            <div class="mock-cta-row">
-              <span class="mock-btn">Shop Sale</span>
-              <span class="mock-btn ghost">Shop New</span>
-              <span class="mock-btn ghost">View Lookbook</span>
-            </div>
-          </div>
-
-          <div class="mock-footer">
-            <span>Unsubscribe · Privacy Policy · Contact Us · Follow Us · Terms</span>
-          </div>
-
-          <!-- annotations -->
-          <button class="mark mark-1" style="top:16%; left:62%;">1</button>
-          <button class="mark mark-2" style="top:52%; left:20%;">2</button>
-          <button class="mark mark-3" style="top:58%; left:52%;">3</button>
-          <button class="mark mark-4" style="top:88%; left:35%;">4</button>
+    <section class="section shell services-section" id="services">
+      <div class="heading services-heading">
+        <div>
+          <p class="eyebrow">01 · Services</p>
+          <h2 class="service-type-heading" aria-label="One studio. The whole system.">
+            <span id="servicesTypedText">One studio.
+The whole system.</span><span class="service-type-cursor" aria-hidden="true">█</span>
+          </h2>
         </div>
-
-        <div class="teardown-notes">
-          <div class="note active" data-mark="1">
-            <span class="note-index">01</span>
-            <p><strong>Competing CTAs.</strong> Three buttons of equal weight give the reader nothing to decide first. One primary action, always.</p>
-          </div>
-          <div class="note" data-mark="2">
-            <span class="note-index">02</span>
-            <p><strong>Wall of text.</strong> The subheadline is doing a paragraph's job. Say less, and say it bigger.</p>
-          </div>
-          <div class="note" data-mark="3">
-            <span class="note-index">03</span>
-            <p><strong>Low contrast.</strong> Light text on a busy background drops below readable contrast on most inboxes.</p>
-          </div>
-          <div class="note" data-mark="4">
-            <span class="note-index">04</span>
-            <p><strong>Weak footer.</strong> Five links with no hierarchy — nothing points back to the brand or the next purchase.</p>
-          </div>
-
-          <a href="#contact" class="btn primary audit-cta">Request Your Audit</a>
+        <div class="services-intro">
+          <blockquote>From the first idea<br><strong>to the final inbox.</strong></blockquote>
+          <p>Design, development, and retention strategy working as one connected system.</p>
         </div>
       </div>
-    </section>
-
-    <!-- ===== WORK ===== -->
-    <section class="work reveal" id="work">
-      <p class="eyebrow">Sent — Work</p>
-      <h2>Real email systems from InboxViewed</h2>
-
-      <p class="section-text">
-        A selection of design and build work — campaigns, flows, and layouts engineered
-        to perform as beautifully as they convert.
-      </p>
-
-      <div class="post-showcase">
-
-        <article class="post-card reveal">
-          <div class="post-slider">
-            <div class="post-track">
-              <img src="assets/posts/post1/1.webp" alt="InboxViewed campaign design 1">
-              <img src="assets/posts/post1/2.webp" alt="InboxViewed campaign design 2">
+      <div class="services">
+        <div class="service-list" role="tablist" aria-label="InboxViewed services">
+          <button class="service-tab active" id="service-tab-0" type="button" role="tab" aria-selected="true" aria-controls="service-detail-panel" tabindex="0" data-service="0">
+            <small class="service-number-cube" aria-label="01"><span class="service-cube" aria-hidden="true"><span class="service-cube-face service-cube-front">01</span><span class="service-cube-face service-cube-back"></span><span class="service-cube-face service-cube-top"></span><span class="service-cube-face service-cube-bottom"></span><span class="service-cube-face service-cube-left"></span><span class="service-cube-face service-cube-right"></span></span></small><b>Premium Figma Design</b><span class="service-tab-status" aria-hidden="true"><i></i>Opened</span>
+          </button>
+          <button class="service-tab" id="service-tab-1" type="button" role="tab" aria-selected="false" aria-controls="service-detail-panel" tabindex="-1" data-service="1">
+            <small class="service-number-cube" aria-label="02"><span class="service-cube" aria-hidden="true"><span class="service-cube-face service-cube-front">02</span><span class="service-cube-face service-cube-back"></span><span class="service-cube-face service-cube-top"></span><span class="service-cube-face service-cube-bottom"></span><span class="service-cube-face service-cube-left"></span><span class="service-cube-face service-cube-right"></span></span></small><b>Hand-Coded HTML</b><span class="service-tab-status" aria-hidden="true"><i></i>Opened</span>
+          </button>
+          <button class="service-tab" id="service-tab-2" type="button" role="tab" aria-selected="false" aria-controls="service-detail-panel" tabindex="-1" data-service="2">
+            <small class="service-number-cube" aria-label="03"><span class="service-cube" aria-hidden="true"><span class="service-cube-face service-cube-front">03</span><span class="service-cube-face service-cube-back"></span><span class="service-cube-face service-cube-top"></span><span class="service-cube-face service-cube-bottom"></span><span class="service-cube-face service-cube-left"></span><span class="service-cube-face service-cube-right"></span></span></small><b>Klaviyo Management</b><span class="service-tab-status" aria-hidden="true"><i></i>Opened</span>
+          </button>
+          <button class="service-tab" id="service-tab-3" type="button" role="tab" aria-selected="false" aria-controls="service-detail-panel" tabindex="-1" data-service="3">
+            <small class="service-number-cube" aria-label="04"><span class="service-cube" aria-hidden="true"><span class="service-cube-face service-cube-front">04</span><span class="service-cube-face service-cube-back"></span><span class="service-cube-face service-cube-top"></span><span class="service-cube-face service-cube-bottom"></span><span class="service-cube-face service-cube-left"></span><span class="service-cube-face service-cube-right"></span></span></small><b>Retention Audits</b><span class="service-tab-status" aria-hidden="true"><i></i>Opened</span>
+          </button>
+          <button class="service-tab" id="service-tab-4" type="button" role="tab" aria-selected="false" aria-controls="service-detail-panel" tabindex="-1" data-service="4">
+            <small class="service-number-cube" aria-label="05"><span class="service-cube" aria-hidden="true"><span class="service-cube-face service-cube-front">05</span><span class="service-cube-face service-cube-back"></span><span class="service-cube-face service-cube-top"></span><span class="service-cube-face service-cube-bottom"></span><span class="service-cube-face service-cube-left"></span><span class="service-cube-face service-cube-right"></span></span></small><b>Email AI Flows</b><span class="service-tab-status" aria-hidden="true"><i></i>Opened</span>
+          </button>
+        </div>
+        <article class="service-detail" id="service-detail-panel" role="tabpanel" aria-labelledby="service-tab-0" tabindex="0" aria-live="polite">
+          <div class="service-reader-bar">
+            <span><i></i> InboxViewed / Services</span>
+            <small id="service-meta">Service 01 · Opened</small>
+          </div>
+          <div class="service-message">
+            <div class="service-icon-frame" aria-hidden="true">
+              <svg id="service-icon" viewBox="0 0 24 24">
+                <path d="M4 20 8.8 18.8 19 8.6a2.1 2.1 0 0 0 0-3L18.4 5a2.1 2.1 0 0 0-3 0L5.2 15.2 4 20Z"></path>
+                <path d="m13.8 6.6 3.6 3.6M5.2 15.2l3.6 3.6"></path>
+              </svg>
+            </div>
+            <p class="service-message-label">Selected service</p>
+            <h3 id="service-title">Premium Figma Design</h3>
+            <p id="service-copy">Pixel-perfect layouts built around your brand, your offer, and the way real customers read.</p>
+            <div class="service-deliverable">
+              <small>What you get</small>
+              <p id="service-extra">Modular systems, desktop and mobile frames, ready for development.</p>
+              <ul id="service-points">
+                <li>Brand-led layouts</li>
+                <li>Desktop + mobile frames</li>
+                <li>Development-ready systems</li>
+              </ul>
             </div>
           </div>
-
-          <div class="post-info">
-            <h3>Campaign Design</h3>
-            <p>Hand-coded visual direction for a promotional email campaign.</p>
+          <div class="service-reader-footer">
+            <span id="service-count">01 / 05</span>
+            <small>Part of the complete retention system</small>
           </div>
         </article>
+      </div>
+    </section>
 
-        <article class="post-card reveal">
-          <div class="post-slider">
-            <div class="post-track">
-              <img src="assets/posts/post2/1.webp" alt="InboxViewed email flow design 1">
-              <img src="assets/posts/post2/2.webp" alt="InboxViewed email flow design 2">
+    <section class="section shell audit-section" id="audit">
+      <div class="heading audit-heading">
+        <div class="audit-heading-copy"><p class="eyebrow">02 · Interactive audit</p><h2>See where the email<br>loses them.</h2></div>
+        <p class="audit-heading-support">Explore the four conversion leaks hiding inside this generic campaign.</p>
+      </div>
+      <div class="audit">
+        <div class="audit-email">
+          <div class="audit-top"><img src="assets/brand/logo-mark.png" alt=""><b>Brand Co.</b><small>Shop · New · Sale</small></div>
+          <div class="audit-hero">
+            <small>Summer drop · 06</small>
+            <div class="audit-contrast-target">
+              <h3>More choice.<br>Less reason.</h3>
+              <button class="pin pin-3" type="button" data-audit="2" aria-label="Audit note 3">3</button>
+            </div>
+            <div class="audit-offer-line">
+              <button class="pin pin-2" type="button" data-audit="1" aria-label="Audit note 2">2</button>
+              <p>Up to forty percent off select pieces for a limited time only, while supplies last.</p>
+            </div>
+            <div class="audit-actions">
+              <button type="button">Shop sale</button><button type="button">Shop new</button><button type="button">View collection</button>
+              <button class="pin pin-1" type="button" data-audit="0" aria-label="Audit note 1">1</button>
             </div>
           </div>
-
-          <div class="post-info">
-            <h3>Email Flow</h3>
-            <p>Retention-focused visuals for an automated Klaviyo flow.</p>
+          <div class="products"><i></i><i></i><i></i></div>
+          <div class="audit-footer">
+            <button class="pin pin-4" type="button" data-audit="3" aria-label="Audit note 4">4</button>
+            <span>Unsubscribe · Privacy · Contact · Social · Terms</span>
           </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- ===== REVIEWS & CLIENTS — scrolling marquees ===== -->
-    <!-- NOTE: placeholder content below — swap in real client reviews/logos once available -->
-    <section class="proof reveal" id="reviews">
-      <p class="eyebrow">Reviews — Clients</p>
-      <h2>What people say</h2>
-
-      <div class="marquee reviews-marquee">
-        <div class="marquee-track">
-
-          <div class="review-card">
-            <span class="review-stars">★★★★★</span>
-            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
-            <p class="review-author">Client Name <span>— Brand Co.</span></p>
-          </div>
-          <div class="review-card">
-            <span class="review-stars">★★★★★</span>
-            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
-            <p class="review-author">Client Name <span>— Brand Co.</span></p>
-          </div>
-          <div class="review-card">
-            <span class="review-stars">★★★★★</span>
-            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
-            <p class="review-author">Client Name <span>— Brand Co.</span></p>
-          </div>
-          <div class="review-card">
-            <span class="review-stars">★★★★★</span>
-            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
-            <p class="review-author">Client Name <span>— Brand Co.</span></p>
-          </div>
-
-          <!-- duplicate set for seamless loop, hidden from assistive tech -->
-          <div class="review-card" aria-hidden="true">
-            <span class="review-stars">★★★★★</span>
-            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
-            <p class="review-author">Client Name <span>— Brand Co.</span></p>
-          </div>
-          <div class="review-card" aria-hidden="true">
-            <span class="review-stars">★★★★★</span>
-            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
-            <p class="review-author">Client Name <span>— Brand Co.</span></p>
-          </div>
-          <div class="review-card" aria-hidden="true">
-            <span class="review-stars">★★★★★</span>
-            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
-            <p class="review-author">Client Name <span>— Brand Co.</span></p>
-          </div>
-          <div class="review-card" aria-hidden="true">
-            <span class="review-stars">★★★★★</span>
-            <p class="review-quote">"Placeholder review — swap in a real client quote here."</p>
-            <p class="review-author">Client Name <span>— Brand Co.</span></p>
-          </div>
-
+          <span class="scan"></span>
         </div>
-      </div>
-
-      <div class="marquee clients-marquee">
-        <div class="marquee-track">
-
-          <div class="client-badge"><span class="client-mark">✕</span>Brand One</div>
-          <div class="client-badge"><span class="client-mark">✕</span>Brand Two</div>
-          <div class="client-badge"><span class="client-mark">✕</span>Brand Three</div>
-          <div class="client-badge"><span class="client-mark">✕</span>Brand Four</div>
-          <div class="client-badge"><span class="client-mark">✕</span>Brand Five</div>
-          <div class="client-badge"><span class="client-mark">✕</span>Brand Six</div>
-
-          <!-- duplicate set for seamless loop -->
-          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand One</div>
-          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Two</div>
-          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Three</div>
-          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Four</div>
-          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Five</div>
-          <div class="client-badge" aria-hidden="true"><span class="client-mark">✕</span>Brand Six</div>
-
+        <div class="notes">
+          <div class="score"><span>Retention health</span><b><span id="auditScoreValue">42</span><small>/100</small></b></div>
+          <button type="button" data-audit="0"><small>01</small><div><b>Competing CTAs</b><p>Three equal actions force the reader to decide what matters. Give one outcome visual priority.</p></div></button>
+          <button type="button" data-audit="1"><small>02</small><div><b>Wall of text</b><p>The supporting line is doing a paragraph's job. Say less, create hierarchy, and let the offer breathe.</p></div></button>
+          <button type="button" data-audit="2"><small>03</small><div><b>Weak contrast</b><p>Muted copy over a dark visual disappears in the inbox. Readability has to survive real devices.</p></div></button>
+          <button type="button" data-audit="3"><small>04</small><div><b>No next step</b><p>The footer ends the message instead of continuing the journey back to the brand or next purchase.</p></div></button>
+          <a href="#contact" class="btn red">Request your audit</a>
         </div>
       </div>
     </section>
 
-    <!-- ===== ABOUT — pinned note ===== -->
-    <section class="about reveal" id="about">
-      <div class="pinned-note">
-        <span class="pin-tag">📌 Pinned</span>
-        <p class="eyebrow">About InboxViewed</p>
-        <h2>Know your value.</h2>
-
-        <p>
-          Every email either gets seen, or scrolled past. We build for the first outcome.
-          InboxViewed exists for ecommerce brands who've outgrown what a template can do —
-          brands that need design, code, and strategy working as one system instead of
-          three separate vendors.
-        </p>
-
-        <p>
-          We pair elite design and copy with hand-built HTML architecture, retention audits,
-          premium Figma layouts, and full-scale Klaviyo management — all engineered to
-          perform as beautifully as they convert.
-        </p>
+    <section class="section shell team-section" id="team">
+      <div class="heading team-heading">
+        <div class="team-heading-copy"><p class="eyebrow">03 · The team</p><h2>Two disciplines.<br>One standard.</h2></div>
+        <p class="team-heading-support">Design and development work side by side, so the idea survives the journey from Figma to every inbox.</p>
       </div>
-    </section>
-
-    <!-- ===== TEAM ===== -->
-    <section class="team reveal" id="team">
-      <p class="eyebrow">Contacts</p>
-      <h2>Who's building it</h2>
-
       <div class="team-photo-wrap" id="teamPhotoWrap">
-        <img src="assets/team-photo-mono.jpg" alt="Enigma and Graham in the studio" class="photo-mono" />
-        <img src="assets/team-photo-color.jpg" alt="" class="photo-color" id="photoColor" />
+        <img src="assets/team-photo-original.png" alt="Riad Tajeddine and Omar Bentair in the InboxViewed studio" class="photo-color">
+        <img src="assets/team-photo-original.png" alt="" class="photo-mono" aria-hidden="true">
+        <img src="assets/team-photo-original.png" alt="" class="photo-focus-color" aria-hidden="true">
 
-        <button class="photo-hotspot" data-person="enigma" data-x="41%" data-y="50.5%" aria-label="Enigma — Chief Executive Officer"></button>
-        <button class="photo-hotspot" data-person="graham" data-x="60.3%" data-y="50.5%" aria-label="Graham — Chief Technology Officer"></button>
+        <button class="photo-hotspot" type="button" data-person="enigma" data-x="41%" data-y="50.5%" aria-label="Riad Tajeddine - Chief Executive Officer"></button>
+        <button class="photo-hotspot" type="button" data-person="graham" data-x="60.3%" data-y="50.5%" aria-label="Omar Bentair - Chief Technology Officer"></button>
 
         <div class="photo-card" data-card="enigma">
-          <p class="photo-card-name">Enigma</p>
-          <p class="photo-card-role">Chief Executive Officer</p>
+          <small>01 · Founder profile</small>
+          <h3>Riad TAJEDDINE</h3>
+          <p>Chief Executive Officer</p>
+          <span class="photo-card-description">Design, copy, and creative direction.</span>
           <div class="photo-card-links">
-            <a href="#" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="#" target="_blank" rel="noopener">Instagram</a>
+            <a href="mailto:riad@inboxviewed.com">Email: riad@inboxviewed.com</a>
+            <a href="https://www.linkedin.com/in/riad-tajeddine/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://www.instagram.com/enigma.cuts/" target="_blank" rel="noopener noreferrer">Instagram</a>
           </div>
         </div>
 
-        <div class="photo-card" data-card="graham" style="top:47.5%; left:59.3%;">
-          <p class="photo-card-name">Graham</p>
-          <p class="photo-card-role">Chief Technology Officer</p>
+        <div class="photo-card" data-card="graham">
+          <small>02 · Founder profile</small>
+          <h3>Omar BENTAIR</h3>
+          <p>Chief Technology Officer</p>
+          <span class="photo-card-description">Development, systems, and technical precision.</span>
           <div class="photo-card-links">
-            <a href="#" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="#" target="_blank" rel="noopener">Instagram</a>
+            <a href="mailto:omar@inboxviewed.com">Email: omar@inboxviewed.com</a>
+            <a href="https://www.linkedin.com/in/omar-bentair/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </div>
         </div>
       </div>
+      <div class="team-caption">Hover or focus a founder</div>
+    </section>
 
-      <div class="contact-cards">
-        <article class="contact-card reveal">
-          <div class="contact-avatar">EN</div>
-          <div class="contact-details">
-            <p class="contact-name">Enigma</p>
-            <p class="contact-role">Chief Executive Officer</p>
-            <p class="contact-status">Still learning. Still building. Never satisfied.</p>
-          </div>
-        </article>
-
-        <article class="contact-card reveal">
-          <div class="contact-avatar">GR</div>
-          <div class="contact-details">
-            <p class="contact-name">Graham</p>
-            <p class="contact-role">Chief Technology Officer</p>
-            <p class="contact-status">Obsessed with the details no one else notices.</p>
-          </div>
-        </article>
+    <section class="section about-section shell" id="about">
+      <div class="about-layout">
+        <div class="about-heading">
+          <p class="eyebrow">04 · About InboxViewed</p>
+          <h2>Know your value.</h2>
+        </div>
+        <div class="about-copy">
+          <p class="about-lead">Every email gets seen or scrolled past. We build for the first outcome.</p>
+          <p>InboxViewed exists for ecommerce brands that have outgrown what a template can do - brands that need design, code, and retention strategy working as one system instead of across separate vendors.</p>
+          <p>We pair sharp creative direction and copy with hand-built HTML architecture, retention audits, premium Figma layouts, and full-scale Klaviyo management - all engineered to perform as beautifully as they convert.</p>
+        </div>
       </div>
     </section>
 
-    <!-- ===== CONTACT — compose ===== -->
-    <section class="contact reveal" id="contact">
-      <p class="eyebrow">New Message</p>
-      <h2>Let's build your next email system</h2>
+    <section class="section contact shell" id="contact">
+      <div class="heading contact-heading">
+        <div><p class="eyebrow">05 · New message</p><h2>Let's build<br>what gets viewed.</h2></div>
+        <p>Tell us what is not working, what you want to launch, or where your retention system needs to go next.</p>
+      </div>
 
       <div class="contact-layout">
-        <form class="compose" id="composeForm">
-          <div class="compose-field">
-            <label>To</label>
-            <span>InboxViewed</span>
-          </div>
-          <div class="compose-field">
-            <label for="composeSubject">Subject</label>
-            <input type="text" id="composeSubject" name="subject" placeholder="Tell us about your brand" required />
-          </div>
-          <div class="compose-field compose-field-message">
-            <label for="composeMessage">Message</label>
-            <textarea id="composeMessage" name="message" rows="4" placeholder="What are you looking to fix or build?" required></textarea>
-          </div>
-
-          <div class="compose-actions">
-            <button type="submit" class="btn primary">Send</button>
-            <span class="compose-hint">Opens your email app — we haven't wired up a backend yet.</span>
+        <form class="compose" action="https://formsubmit.co/ajax/contact@inboxviewed.com" method="POST">
+          <div class="compose-bar"><span>Compose · New inquiry</span><i>● ● ●</i></div>
+          <input type="hidden" name="_subject" value="New InboxViewed website inquiry">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="form-honeypot">
+          <label><span>To</span><b>InboxViewed &lt;contact@inboxviewed.com&gt;</b></label>
+          <label><span>Name</span><input name="name" autocomplete="name" required placeholder="Your name"></label>
+          <label><span>From</span><input type="email" name="email" autocomplete="email" required placeholder="you@yourbrand.com"></label>
+          <label><span>Brand</span><input name="company" autocomplete="organization" required placeholder="Your company or brand"></label>
+          <label><span>Subject</span><input name="subject" required placeholder="What are we building?"></label>
+          <label class="message"><span>Message</span><textarea name="message" required placeholder="Tell us about your brand, your current email setup, and what needs to change."></textarea></label>
+          <div class="send">
+            <button type="submit">Send inquiry ↗</button>
+            <small class="form-status" role="status" aria-live="polite">Delivered directly to our inbox</small>
           </div>
         </form>
 
         <aside class="direct-contact" aria-label="Direct contact options">
           <p class="direct-contact-label">Prefer a direct conversation?</p>
-
           <div class="socials">
-            <a href="https://wa.me/212783824347" target="_blank" rel="noopener" class="social-card whatsapp" aria-label="Contact InboxViewed on WhatsApp Business at +212 783-824347">
-              <span class="social-card-icon" aria-hidden="true">WA</span>
-              <span class="social-card-copy">
-                <b>WhatsApp Business</b>
-                <span>+212 783-824347</span>
-                <small>Usually the fastest way to reach us.</small>
-              </span>
-              <span class="social-card-arrow" aria-hidden="true">↗</span>
+            <a href="https://wa.me/212783824347" target="_blank" rel="noopener noreferrer" class="social-card whatsapp" aria-label="Contact InboxViewed on WhatsApp Business at +212 783-824347">
+              <span class="social-card-icon"><img src="assets/social/whatsapp.svg" alt=""></span>
+              <span class="social-card-copy"><b>WhatsApp Business</b><span>+212 783-824347</span><small>Usually the fastest way to reach us.</small></span>
+              <span class="social-card-arrow">↗</span>
             </a>
-
-            <a href="https://www.instagram.com/inboxviewed/" target="_blank" rel="noopener" class="social-card instagram" aria-label="Open InboxViewed on Instagram">
-              <span class="social-card-icon" aria-hidden="true">IG</span>
-              <span class="social-card-copy">
-                <b>Instagram</b>
-                <span>@inboxviewed</span>
-                <small>Design work, process, and studio updates.</small>
-              </span>
-              <span class="social-card-arrow" aria-hidden="true">↗</span>
+            <a href="https://www.instagram.com/inboxviewed/" target="_blank" rel="noopener noreferrer" class="social-card instagram" aria-label="Open InboxViewed on Instagram">
+              <span class="social-card-icon"><img src="assets/social/instagram.svg" alt=""></span>
+              <span class="social-card-copy"><b>Instagram</b><span>@inboxviewed</span><small>Design work, process, and studio updates.</small></span>
+              <span class="social-card-arrow">↗</span>
             </a>
-
-            <a href="https://www.linkedin.com/company/inboxviewed/" target="_blank" rel="noopener" class="social-card linkedin" aria-label="Open the InboxViewed company page on LinkedIn">
-              <span class="social-card-icon" aria-hidden="true">IN</span>
-              <span class="social-card-copy">
-                <b>LinkedIn</b>
-                <span>InboxViewed</span>
-                <small>Company updates and professional insights.</small>
-              </span>
-              <span class="social-card-arrow" aria-hidden="true">↗</span>
+            <a href="https://www.linkedin.com/company/inboxviewed/" target="_blank" rel="noopener noreferrer" class="social-card linkedin" aria-label="Open the InboxViewed company page on LinkedIn">
+              <span class="social-card-icon"><img src="assets/social/linkedin.svg" alt=""></span>
+              <span class="social-card-copy"><b>LinkedIn</b><span>InboxViewed</span><small>Company updates and professional insights.</small></span>
+              <span class="social-card-arrow">↗</span>
             </a>
           </div>
         </aside>
       </div>
     </section>
-
   </main>
 
-  <!-- ===== COMPOSE FAB ===== -->
-  <a href="#contact" class="compose-fab" aria-label="New message">
-    <span class="fab-icon">✎</span>
-    <span class="fab-label">New Message</span>
-  </a>
-
-  <footer class="premium-footer">
-    <div class="footer-brand">
-      <img src="assets/brand/logo-mark.png" alt="InboxViewed mark" />
-      <div>
-        <h3>InboxViewed</h3>
-        <p>Custom-coded email systems for brands who've outgrown templates.</p>
-      </div>
+  <footer class="shell">
+    <div class="brand">
+      <img src="assets/brand/logo-mark.png" alt="" aria-hidden="true">
+      <div><b>InboxViewed</b><small>Delivered means nothing. Viewed means something.</small></div>
     </div>
-
-    <div class="footer-links">
-      <a href="#services">Services</a>
-      <a href="#audit">Audit</a>
-      <a href="#work">Work</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#about">About</a>
-      <a href="#team">Team</a>
-      <a href="mailto:service@enigmail.space">Email</a>
-      <a href="https://wa.me/212783824347" target="_blank" rel="noopener">WhatsApp</a>
-      <a href="https://www.instagram.com/inboxviewed/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.linkedin.com/company/inboxviewed/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-
-    <p class="footer-bottom">© 2026 InboxViewed. All rights reserved.</p>
+    <nav aria-label="Footer navigation">
+      <a href="#services">Services</a><a href="#audit">Audit</a><a href="#team">Team</a><a href="#about">About</a><a href="#contact">Contact</a>
+    </nav>
+    <p>© 2026 InboxViewed. All rights reserved.</p>
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
