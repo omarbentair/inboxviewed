@@ -903,12 +903,12 @@ html{--light-power:0;--scene-light:0}
   }
   .service-reader-title{
     flex:1 1 auto;
+    min-width:0;
   }
   .service-reader-bar .mail-chip{
-    flex:0 1 42%;
-    max-width:42%;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    flex:0 0 auto;
+    min-width:0;
+    max-width:none;
     white-space:nowrap;
   }
   .service-message{
