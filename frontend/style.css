@@ -869,3 +869,63 @@ html{--light-power:0;--scene-light:0}
     animation:none!important;
   }
 }
+
+/* Phone feedback: join the Hero artwork to its capability rail and contain Services. */
+@media(max-width:820px){
+  .canvas{
+    gap:0;
+  }
+  .featured{
+    border-bottom:0;
+    border-radius:16px 16px 0 0;
+  }
+  .capabilities{
+    border-top:0;
+    border-radius:0 0 16px 16px;
+    overflow:hidden;
+  }
+
+  .services{
+    grid-template-columns:minmax(0,1fr);
+  }
+  .service-list,
+  .service-detail,
+  .service-reader-bar,
+  .service-message,
+  .service-deliverable,
+  .service-reader-footer{
+    min-width:0;
+    width:100%;
+    max-width:100%;
+  }
+  .service-reader-bar{
+    overflow:hidden;
+  }
+  .service-reader-title{
+    flex:1 1 auto;
+  }
+  .service-reader-bar .mail-chip{
+    flex:0 1 42%;
+    max-width:42%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .service-message{
+    padding-inline:20px;
+    overflow-wrap:anywhere;
+  }
+  .service-detail h3,
+  .service-detail #service-copy,
+  .service-deliverable>p,
+  .service-deliverable li{
+    min-width:0;
+    max-width:100%;
+    overflow-wrap:anywhere;
+    word-break:normal;
+  }
+  .service-deliverable ul{
+    min-width:0;
+    width:100%;
+  }
+}
