@@ -540,7 +540,7 @@ if (auditSection && auditScoreValue) {
     const auditObserver = new IntersectionObserver((entries, observer) => {
       if (!entries.some((entry) => entry.isIntersecting)) return;
       auditSection.classList.add("in-view");
-      window.setTimeout(countAuditScore, 2380);
+      window.setTimeout(countAuditScore, 1180);
       observer.disconnect();
     }, { threshold: 0.16 });
 

@@ -133,7 +133,8 @@ The whole system.</span><span class="service-type-cursor" aria-hidden="true">█
         </div>
         <article class="service-detail" id="service-detail-panel" role="tabpanel" aria-labelledby="service-tab-0" tabindex="0" aria-live="polite">
           <div class="service-reader-bar">
-            <span><i></i> InboxViewed / Services</span>
+            <span class="service-window-controls" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="service-reader-title">InboxViewed / Services</span>
             <small class="mail-chip" id="service-meta">Service 01 · Opened</small>
           </div>
           <div class="service-message">
@@ -218,7 +219,6 @@ The whole system.</span><span class="service-type-cursor" aria-hidden="true">█
         <button class="photo-hotspot" type="button" data-person="graham" data-x="60.3%" data-y="50.5%" aria-label="Omar Bentair - Chief Technology Officer"></button>
 
         <div class="photo-card" data-card="enigma">
-          <small>01 · Founder profile</small>
           <h3>Riad TAJEDDINE</h3>
           <p>Chief Executive Officer</p>
           <span class="photo-card-description">Design, copy, and creative direction.</span>
@@ -230,7 +230,6 @@ The whole system.</span><span class="service-type-cursor" aria-hidden="true">█
         </div>
 
         <div class="photo-card" data-card="graham">
-          <small>02 · Founder profile</small>
           <h3>Omar BENTAIR</h3>
           <p>Chief Technology Officer</p>
           <span class="photo-card-description">Development, systems, and technical precision.</span>
@@ -297,7 +296,11 @@ The whole system.</span><span class="service-type-cursor" aria-hidden="true">█
 
       <div class="contact-layout">
         <form class="compose" action="https://formsubmit.co/ajax/contact@inboxviewed.com" method="POST">
-          <div class="compose-bar"><span>Compose · New inquiry</span><i>● ● ●</i></div>
+          <div class="compose-bar">
+            <span class="compose-window-controls" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="compose-window-title">InboxViewed / New inquiry</span>
+            <small>Compose</small>
+          </div>
           <input type="hidden" name="_subject" value="New InboxViewed website inquiry">
           <input type="hidden" name="_template" value="table">
           <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="form-honeypot">

@@ -259,7 +259,7 @@ footer{min-height:210px;padding:50px 44px 30px;display:grid;grid-template-column
   grid-template-rows:repeat(3,minmax(0,1fr));
   gap:0;
   border-block:1px solid #d6d3ce;
-  background:linear-gradient(90deg,#fff 0,#fff 72%,#ffffffd9 88%,#ffffff00 100%);
+  background:linear-gradient(90deg,#fff 0,#fff 94%,#fffffff0 97%,#ffffff00 100%);
 }
 .cap-card{
   padding:24px 38px 24px 24px;
@@ -580,4 +580,218 @@ html{--light-power:0;--scene-light:0}
   .featured,.capabilities{grid-column:1}
   .cap-card{grid-template-columns:44px minmax(0,1fr);padding-inline:20px 34px}
   .cap-card b,.cap-card small{overflow-wrap:anywhere}
+}
+
+/* Cofounder desktop refinement: rounded outer shells, crisp inner inbox panes. */
+@media(min-width:821px){
+  /* The Hero stays black; white exists only inside its joined content surface. */
+  .hero{background:#000}
+  .canvas{
+    background:transparent;
+  }
+  .audit::before{display:none}
+  .audit-email{box-shadow:none}
+
+  /* Larger section labels use the brand display face instead of utility mono. */
+  .section>.heading .eyebrow,
+  .about-heading>.eyebrow{
+    margin-bottom:20px;
+    color:#b9b4ae;
+    font-family:var(--display);
+    font-size:18px;
+    font-weight:750;
+    line-height:1;
+    letter-spacing:.055em;
+  }
+
+  /* Services remains one composition, but the reader now floats clear of the list. */
+  .services{
+    gap:20px;
+    padding:14px;
+    overflow:visible;
+    border:1px solid #2f2b29;
+    border-radius:24px;
+    background:linear-gradient(135deg,#0d0b0b,#060606 54%,#150505);
+    box-shadow:0 28px 72px #0008,inset 0 1px #ffffff08;
+  }
+  .services::before,.services::after{display:none}
+  .service-list{
+    overflow:hidden;
+    border:1px solid #292625;
+    border-radius:0;
+    background:#070707;
+  }
+  .service-detail{
+    overflow:hidden;
+    border:1px solid #cfcac4;
+    border-radius:18px;
+    box-shadow:0 22px 54px #00000059,0 0 0 1px #ffffff70 inset;
+  }
+  .service-reader-bar{
+    position:relative;
+    justify-content:flex-start;
+    gap:14px;
+    padding-inline:18px;
+    background:linear-gradient(#f7f5f2,#ebe7e2);
+    box-shadow:inset 0 1px #fff;
+  }
+  .service-window-controls{display:flex;align-items:center;gap:7px;flex:0 0 auto}
+  .service-window-controls i{
+    width:11px!important;
+    height:11px!important;
+    border:1px solid #00000018;
+    border-radius:50%!important;
+    box-shadow:none!important;
+  }
+  .service-window-controls i:nth-child(1){background:#ff5f57!important}
+  .service-window-controls i:nth-child(2){background:#febc2e!important}
+  .service-window-controls i:nth-child(3){background:#28c840!important}
+  .service-window-controls i,
+  .compose-window-controls i{
+    position:relative;
+    transition:transform .2s cubic-bezier(.16,1,.3,1),filter .2s ease,box-shadow .2s ease!important;
+    cursor:default;
+  }
+  .service-window-controls:hover i,
+  .compose-window-controls:hover i{
+    filter:saturate(1.14) brightness(1.03);
+    box-shadow:inset 0 0 0 1px #00000012,0 2px 5px #00000020!important;
+  }
+  .service-window-controls i:hover,
+  .compose-window-controls i:hover{transform:scale(1.18)}
+  .service-window-controls i::after,
+  .compose-window-controls i::after{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    color:#55100d;
+    font:700 7px/1 Arial,sans-serif;
+    opacity:0;
+    transition:opacity .16s ease;
+  }
+  .service-window-controls i:nth-child(1)::after,
+  .compose-window-controls i:nth-child(1)::after{content:"\00d7"}
+  .service-window-controls i:nth-child(2)::after,
+  .compose-window-controls i:nth-child(2)::after{content:"\2212"}
+  .service-window-controls i:nth-child(3)::after,
+  .compose-window-controls i:nth-child(3)::after{content:"+"}
+  .service-window-controls:hover i::after,
+  .compose-window-controls:hover i::after{opacity:.72}
+  .service-reader-title{color:#6a645f;letter-spacing:.1em}
+  .service-reader-bar .mail-chip{margin-left:auto}
+
+  /* Audit rounds only the complete interactive module; both inner panes stay square. */
+  .audit{
+    overflow:hidden;
+    border:1px solid #383330;
+    border-radius:24px;
+    background:var(--panel);
+    box-shadow:0 28px 72px #0008;
+  }
+  .audit-email,.notes{border-radius:0}
+
+  /* Contact treats the compose window and direct-contact rail as sibling outer shells. */
+  .compose,.direct-contact{
+    overflow:hidden;
+    border-radius:22px;
+  }
+  .compose{box-shadow:0 28px 68px #00000052}
+  .compose-bar{
+    justify-content:flex-start;
+    gap:14px;
+    padding-inline:18px;
+    background:linear-gradient(#f7f5f2,#ebe7e2);
+    box-shadow:inset 0 1px #fff;
+  }
+  .compose-window-controls{display:flex;align-items:center;gap:7px;flex:0 0 auto}
+  .compose-window-controls i{
+    width:11px;
+    height:11px;
+    border:1px solid #00000018;
+    border-radius:50%;
+  }
+  .compose-window-controls i:nth-child(1){background:#ff5f57}
+  .compose-window-controls i:nth-child(2){background:#febc2e}
+  .compose-window-controls i:nth-child(3){background:#28c840}
+  .compose-window-title{color:#6a645f;font:8px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+  .compose-bar>small{margin-left:auto;color:#8b847e;font:8px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+  .direct-contact{
+    border-color:#302b29;
+    background:linear-gradient(150deg,#100d0d,#070707 55%,#120404);
+    box-shadow:0 24px 58px #00000048;
+  }
+  .social-card{border-radius:16px}
+}
+
+@media(max-width:820px){
+  .service-window-controls{display:flex;align-items:center;gap:5px;flex:0 0 auto}
+  .service-window-controls i{width:7px!important;height:7px!important;box-shadow:none!important}
+  .service-reader-title{display:none!important}
+  .service-reader-bar .mail-chip{margin-left:auto}
+  .canvas{background:transparent}
+  .featured{background:#fff}
+  .capabilities{background:linear-gradient(180deg,#fff 0,#fff 92%,#ffffffeb 100%)}
+  .compose,.direct-contact{overflow:hidden;border-radius:18px}
+  .social-card{border-radius:14px}
+  .compose-bar{justify-content:flex-start;gap:9px}
+  .compose-window-controls{display:flex;align-items:center;gap:5px;flex:0 0 auto}
+  .compose-window-controls i{width:8px;height:8px;border-radius:50%;border:1px solid #00000016}
+  .compose-window-controls i:nth-child(1){background:#ff5f57}
+  .compose-window-controls i:nth-child(2){background:#febc2e}
+  .compose-window-controls i:nth-child(3){background:#28c840}
+  .compose-window-title{color:#6a645f;font:7px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+  .compose-bar>small{display:none}
+}
+
+/* Atomic surface reveals: never expose an empty decorative shell before its content. */
+.hero-pending .capabilities{
+  opacity:0;
+  transform:translateX(28px) scale(.99);
+}
+.hero-ready .capabilities{
+  animation:hero-surface-enter .72s .78s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes hero-surface-enter{
+  from{opacity:0;transform:translateX(28px) scale(.99)}
+  to{opacity:1;transform:none}
+}
+
+.audit-motion-ready:not(.in-view) .audit{
+  opacity:0;
+  transform:translateY(28px) scale(.99);
+}
+.audit-motion-ready.in-view .audit{
+  animation:audit-module-enter .72s .92s cubic-bezier(.16,1,.3,1) both;
+}
+.audit-motion-ready.in-view .audit-email{animation-delay:.98s}
+.audit-motion-ready.in-view .score{animation-delay:1.08s}
+.audit-motion-ready.in-view .notes>button:nth-of-type(1){animation-delay:1.16s}
+.audit-motion-ready.in-view .notes>button:nth-of-type(2){animation-delay:1.24s}
+.audit-motion-ready.in-view .notes>button:nth-of-type(3){animation-delay:1.32s}
+.audit-motion-ready.in-view .notes>button:nth-of-type(4){animation-delay:1.4s}
+.audit-motion-ready.in-view .pin-1{animation-delay:1.2s}
+.audit-motion-ready.in-view .pin-2{animation-delay:1.28s}
+.audit-motion-ready.in-view .pin-3{animation-delay:1.36s}
+.audit-motion-ready.in-view .pin-4{animation-delay:1.44s}
+.audit-motion-ready.in-view .notes>.btn{animation-delay:1.5s}
+@keyframes audit-module-enter{
+  from{opacity:0;transform:translateY(28px) scale(.99)}
+  to{opacity:1;transform:none}
+}
+
+@media(max-width:820px){
+  .hero-pending .capabilities{transform:translateY(22px) scale(.99)}
+  @keyframes hero-surface-enter{
+    from{opacity:0;transform:translateY(22px) scale(.99)}
+    to{opacity:1;transform:none}
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .capabilities,.audit-motion-ready .audit{
+    opacity:1!important;
+    transform:none!important;
+    animation:none!important;
+  }
 }
