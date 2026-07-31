@@ -78,6 +78,12 @@ let servicesTypingStarted = false;
 let serviceCubeFrame = 0;
 let auditRevealStarted = false;
 
+const setHeaderLightState = (className, enabled = true) => {
+  if (!headerLight) return;
+  headerLight.classList.toggle(className, enabled);
+  document.documentElement.classList.toggle(`light-${className}`, enabled);
+};
+
 const typeServicesHeading = () => {
   if (servicesTypingStarted || !servicesTypedText) return;
   servicesTypingStarted = true;
@@ -299,18 +305,17 @@ const scheduleOccasionalFlicker = (delay = 5000 + Math.random() * 6000) => {
     const flickerClass = occasionalFlickerClasses[
       Math.floor(Math.random() * occasionalFlickerClasses.length)
     ];
-    headerLight.classList.add(flickerClass);
+    setHeaderLightState(flickerClass);
   }, delay);
 };
 
 if (headerLight) {
-  headerLight.addEventListener("animationend", (event) => {
-    if (event.target !== headerLight) return;
+  document.documentElement.addEventListener("animationend", (event) => {
+    if (event.target !== document.documentElement) return;
 
-    if (event.animationName === "boot") {
-      headerLight.classList.remove("booting");
-      headerLight.classList.add("is-lit");
-      revealHero();
+    if (event.animationName === "warehouse-light-boot") {
+      setHeaderLightState("booting", false);
+      setHeaderLightState("is-lit");
       scheduleOccasionalFlicker(3500);
       return;
     }
@@ -320,7 +325,7 @@ if (headerLight) {
     );
 
     if (completedFlicker) {
-      headerLight.classList.remove(completedFlicker);
+      setHeaderLightState(completedFlicker, false);
       scheduleOccasionalFlicker();
     }
   });
@@ -356,10 +361,11 @@ if (bootIntro) {
     introComplete = true;
     bootIntro.remove();
     if (reducedMotion.matches) {
-      headerLight?.classList.add("is-lit");
+      setHeaderLightState("is-lit");
       revealHero();
     } else {
-      headerLight?.classList.add("booting");
+      setHeaderLightState("booting");
+      revealHero();
       heroStartFallbackTimer = window.setTimeout(revealHero, 3100);
     }
   };
@@ -422,7 +428,7 @@ if (bootIntro) {
     }
   });
 } else if (headerLight) {
-  headerLight.classList.add("is-lit");
+  setHeaderLightState("is-lit");
   revealHero();
   scheduleOccasionalFlicker();
 } else {
