@@ -564,3 +564,20 @@ html{--light-power:0;--scene-light:0}
   }
   .team-photo-wrap::after{display:none}
 }
+
+/* Mobile Hero containment: keep the opened-message artwork inside the shell. */
+@media(max-width:820px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero-copy,.canvas,.featured,.capabilities{min-width:0;width:100%}
+  .hero h1{font-size:clamp(42px,12.4vw,58px);overflow-wrap:normal}
+  .hero-copy>p{max-width:100%;overflow-wrap:anywhere}
+  .buttons,.btn{width:100%;min-width:0}
+  .btn{padding-inline:18px;text-align:center;white-space:normal}
+  .canvas{
+    grid-template-columns:minmax(0,1fr);
+    overflow:hidden;
+  }
+  .featured,.capabilities{grid-column:1}
+  .cap-card{grid-template-columns:44px minmax(0,1fr);padding-inline:20px 34px}
+  .cap-card b,.cap-card small{overflow-wrap:anywhere}
+}
