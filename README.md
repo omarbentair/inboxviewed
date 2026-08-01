@@ -100,14 +100,16 @@ The inbox and email-client language should remain recognizable without making th
 - Sticky responsive header and mobile navigation
 - Concealed red header light with a smooth 2.5-second ambient startup and occasional flickers
 - Custom X-mark cursor and ambient cursor glow on supported pointer devices
-- Black Hero background with a rounded phone-artwork panel
-- White capability surface contained inside the Hero media composition, holding solid through 94% before fading at the far-right edge
-- Responsive Hero containment with a stacked mobile layout and no page-wide overflow masking
+- Full-bleed desktop Hero video with a compact bottom-left copy block, an intentionally empty center, and three independent title-only capability cards anchored at the bottom of the far-right column
+- Three interactive Hero logo cubes using the official Figma and Klaviyo marks plus the existing HTML icon
+- Optimized desktop-only 20-second Hero background video with a poster fallback, muted autoplay, looping playback, and no audio payload
+- Video-timed clearance keeps the left Hero copy clear from `5s-8s` and `12s-15s` of every loop, while the existing right-card timing protects the opposite close-ups
+- Responsive Hero service-rail containment with no phone panel or page-wide overflow masking
 - Interactive Services interface with five selectable services
 - Mac-style Services reader on desktop and mobile, with decorative reactive traffic-light controls
 - Rounded Services outer shell with sharp internal panes
 - Interactive Audit with four synchronized markers and findings
-- Atomic Audit reveal, animated `42/100` score, rounded outer shell, sharp internal panes, and no outer white halo
+- Atomic Audit reveal, animated `42/100` score, one fully visible pixel-art health heart beside the score with a subtle reduced-motion-safe beat, rounded outer shell, sharp internal panes, and no outer white halo
 - Interactive desktop founder photograph with hotspot-driven profile cards
 - Dedicated rounded founder cards on mobile
 - About InboxViewed section
@@ -141,7 +143,8 @@ The form includes a honeypot field and displays its submission status without se
 - Preserve existing selectors, naming, animations, content, accessibility attributes, and working interactions unless a request directly changes them.
 - Make only requested changes and reuse existing code.
 - Keep major outer content shells rounded while preserving sharper internal inbox panes and controls.
-- Keep the Hero background black. White belongs only inside its right media content surface and fades at the far-right edge.
+- Keep the supplied desktop Hero video full-bleed. Preserve the compact lower-left copy boundary, empty center, and three title-only translucent cards at the lower far right; do not restore descriptions or a shared enclosing rail.
+- Preserve the left-copy clearance windows at exactly `5s-8s` and `12s-15s` on every video loop, plus the independent right-card clearance timing. Mobile must remain static and must not load the video.
 - Preserve the 2.5-second light startup and its single occasional-flicker controller.
 - Preserve the atomic Hero and Audit loading behavior so no empty white surface or empty shell appears before its content.
 - Preserve the Services tab behavior and the distinction between reveal state and active service state.
@@ -159,6 +162,6 @@ Authoritative uploaded baseline SHA-256:
 b9c3d56aa49fafe6ab995edaac276fede48a9b48704e0dcd8b7cce3f95f4be98
 ```
 
-Compared with `InboxViewed_Static_mobile-shell-polish.zip`, all non-asset project files are byte-for-byte identical. The only approved baseline differences are inside `assets/`.
+This build continues from `InboxViewed_Static_hero-video-background.zip`. It keeps the approved desktop Hero background video and poster, and refines the left-copy clearance to the exact `5s-8s` and `12s-15s` intervals on every loop. All visual assets remain unchanged.
 
 See `Project_handoff.md.txt` for the complete implementation history, current verification status, risks, deferred work, and continuation instructions.

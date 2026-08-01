@@ -56,6 +56,11 @@ const servicesSection = document.querySelector(".services-section");
 const servicesTypedText = document.querySelector("#servicesTypedText");
 const serviceList = document.querySelector(".service-list");
 const serviceCubes = serviceButtons.map((button) => button.querySelector(".service-cube"));
+const heroCapabilityCards = [...document.querySelectorAll(".cap-card")];
+const heroCubes = heroCapabilityCards.map((card) => card.querySelector(".hero-cube"));
+const heroSection = document.querySelector(".hero");
+const heroVideo = document.querySelector("[data-desktop-video]");
+const desktopHeroVideo = window.matchMedia("(min-width: 1101px)");
 const serviceDetail = document.querySelector("#service-detail-panel");
 const serviceIcon = document.querySelector("#service-icon");
 const servicePoints = document.querySelector("#service-points");
@@ -76,7 +81,90 @@ let heroStartFallbackTimer = 0;
 let startupUnlockFallbackTimer = 0;
 let servicesTypingStarted = false;
 let serviceCubeFrame = 0;
+let heroCubeFrame = 0;
+let heroVideoFrame = 0;
+let heroVideoStarted = false;
 let auditRevealStarted = false;
+
+const phoneOverlapsHeroCopy = (time) =>
+  (time >= 5 && time <= 8) || (time >= 12 && time <= 15);
+
+const phoneOverlapsHeroServices = (time) =>
+  (time >= 3.75 && time <= 6.75) ||
+  (time >= 11.65 && time <= 14.35) ||
+  time >= 18.5;
+
+const syncHeroVideoComposition = () => {
+  if (!heroVideo || !heroSection) return;
+  heroSection.classList.toggle("hero-phone-over-copy", phoneOverlapsHeroCopy(heroVideo.currentTime));
+  heroSection.classList.toggle("hero-phone-over-services", phoneOverlapsHeroServices(heroVideo.currentTime));
+
+  if (!heroVideo.paused && !heroVideo.ended) {
+    heroVideoFrame = window.requestAnimationFrame(syncHeroVideoComposition);
+  }
+};
+
+const prepareHeroVideo = () => {
+  if (!heroVideo || !heroSection || !desktopHeroVideo.matches) return;
+  heroSection.classList.add("hero-video-enabled");
+
+  if (!heroVideo.getAttribute("src")) {
+    heroVideo.src = heroVideo.dataset.src;
+    heroVideo.load();
+  }
+};
+
+const startHeroVideo = () => {
+  if (!heroVideo || !heroSection || !desktopHeroVideo.matches) return;
+  prepareHeroVideo();
+
+  if (reducedMotion.matches) {
+    heroVideo.pause();
+    heroVideo.currentTime = 0;
+    heroSection.classList.remove("hero-phone-over-copy", "hero-phone-over-services");
+    return;
+  }
+
+  if (!heroVideoStarted) {
+    heroVideo.currentTime = 0;
+    heroVideoStarted = true;
+  }
+
+  heroVideo.play().catch(() => {
+    // The poster remains visible if a browser declines background autoplay.
+  });
+};
+
+if (heroVideo && heroSection) {
+  heroVideo.addEventListener("loadeddata", () => {
+    heroSection.classList.add("hero-video-ready");
+  });
+  heroVideo.addEventListener("play", () => {
+    window.cancelAnimationFrame(heroVideoFrame);
+    heroVideoFrame = window.requestAnimationFrame(syncHeroVideoComposition);
+  });
+  heroVideo.addEventListener("pause", () => {
+    window.cancelAnimationFrame(heroVideoFrame);
+  });
+
+  const handleHeroVideoBreakpoint = () => {
+    if (desktopHeroVideo.matches) {
+      prepareHeroVideo();
+      if (document.documentElement.classList.contains("hero-ready")) startHeroVideo();
+      return;
+    }
+
+    heroVideo.pause();
+    heroSection.classList.remove(
+      "hero-video-enabled",
+      "hero-phone-over-copy",
+      "hero-phone-over-services"
+    );
+  };
+
+  desktopHeroVideo.addEventListener("change", handleHeroVideoBreakpoint);
+  prepareHeroVideo();
+}
 
 const setHeaderLightState = (className, enabled = true) => {
   if (!headerLight) return;
@@ -138,6 +226,16 @@ const resetServiceCubes = () => {
     cube.style.setProperty("--cube-lift", "0px");
     cube.style.setProperty("--cube-response", "0");
     cube.closest(".service-number-cube")?.classList.remove("cube-reacting");
+  });
+};
+
+const resetHeroCubes = () => {
+  heroCubes.forEach((cube) => {
+    if (!cube) return;
+    cube.style.setProperty("--hero-cube-rx", "-7deg");
+    cube.style.setProperty("--hero-cube-ry", "8deg");
+    cube.style.setProperty("--hero-cube-lift", "0px");
+    cube.closest(".hero-cube-wrap")?.classList.remove("cube-reacting");
   });
 };
 
@@ -248,6 +346,43 @@ const updateServiceCubes = (clientX, clientY) => {
   });
 };
 
+const updateHeroCubes = (clientX, clientY) => {
+  if (heroCapabilityCards.length === 0) return;
+
+  const cardRects = heroCapabilityCards.map((card) => card.getBoundingClientRect());
+  const insideIndex = cardRects.findIndex(
+    (rect) => clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom
+  );
+
+  heroCubes.forEach((cube, index) => {
+    if (!cube) return;
+    const wrapper = cube.closest(".hero-cube-wrap");
+
+    if (insideIndex !== index) {
+      cube.style.setProperty("--hero-cube-rx", "-7deg");
+      cube.style.setProperty("--hero-cube-ry", "8deg");
+      cube.style.setProperty("--hero-cube-lift", "0px");
+      wrapper?.classList.remove("cube-reacting");
+      return;
+    }
+
+    const cubeRect = wrapper.getBoundingClientRect();
+    const dx = clientX - (cubeRect.left + cubeRect.width / 2);
+    const dy = clientY - (cubeRect.top + cubeRect.height / 2);
+    const distance = Math.max(Math.hypot(dx, dy), 1);
+    const influenceRadius = Math.hypot(cardRects[index].width, cardRects[index].height) * 0.92;
+    const proximity = Math.max(0.16, Math.min(1, 1 - distance / influenceRadius));
+    const maxAngle = 32;
+    const rotateX = Math.max(-38, Math.min(38, -7 - (dy / distance) * maxAngle * proximity));
+    const rotateY = Math.max(-38, Math.min(38, 8 + (dx / distance) * maxAngle * proximity));
+
+    cube.style.setProperty("--hero-cube-rx", `${rotateX.toFixed(2)}deg`);
+    cube.style.setProperty("--hero-cube-ry", `${rotateY.toFixed(2)}deg`);
+    cube.style.setProperty("--hero-cube-lift", `${(-3.5 * proximity).toFixed(2)}px`);
+    wrapper?.classList.add("cube-reacting");
+  });
+};
+
 if (
   serviceList &&
   serviceCubes.some(Boolean) &&
@@ -265,12 +400,29 @@ if (
   window.addEventListener("blur", resetServiceCubes);
 }
 
+if (
+  heroCubes.some(Boolean) &&
+  window.matchMedia("(pointer: fine)").matches &&
+  !reducedMotion.matches
+) {
+  document.addEventListener("pointermove", (event) => {
+    window.cancelAnimationFrame(heroCubeFrame);
+    heroCubeFrame = window.requestAnimationFrame(() => {
+      updateHeroCubes(event.clientX, event.clientY);
+    });
+  });
+
+  document.addEventListener("pointerleave", resetHeroCubes);
+  window.addEventListener("blur", resetHeroCubes);
+}
+
 const unlockStartup = () => {
   window.clearTimeout(startupUnlockFallbackTimer);
   document.documentElement.classList.remove("boot-locked");
 };
 
 const revealHero = () => {
+  startHeroVideo();
   if (document.documentElement.classList.contains("hero-ready")) return;
   window.clearTimeout(heroStartFallbackTimer);
 
