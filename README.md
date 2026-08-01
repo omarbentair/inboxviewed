@@ -109,7 +109,7 @@ The inbox and email-client language should remain recognizable without making th
 - Mac-style Services reader on desktop and mobile, with decorative reactive traffic-light controls
 - Rounded Services outer shell with sharp internal panes
 - Interactive Audit with four synchronized markers and findings
-- Atomic Audit reveal, animated `42/100` score, one fully visible pixel-art health heart beside the score with a subtle reduced-motion-safe beat, rounded outer shell, sharp internal panes, and no outer white halo
+- Atomic Audit reveal, animated `42/100` score, one reference-matched Minecraft-style pixel heart beside the score with a subtle reduced-motion-safe beat, rounded outer shell, sharp internal panes, and no outer white halo
 - Interactive desktop founder photograph with hotspot-driven profile cards
 - Dedicated rounded founder cards on mobile
 - About InboxViewed section

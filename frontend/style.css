@@ -1113,10 +1113,10 @@ html{--light-power:0;--scene-light:0}
   shape-rendering:crispEdges;
   filter:drop-shadow(0 0 8px #b3000066);
 }
-.retention-heart .heart-shadow{fill:#3b0000}
-.retention-heart .heart-main{fill:#dc1515}
-.retention-heart .heart-light{fill:#ff7777}
-.retention-heart .heart-deep{fill:#8d0000}
+.retention-heart .heart-outline{fill:#040001}
+.retention-heart .heart-main{fill:#fe0000}
+.retention-heart .heart-light{fill:#fff}
+.retention-heart .heart-deep{fill:#560001}
 
 .direct-contact-label{
   font-size:clamp(24px,2vw,30px);
@@ -1193,11 +1193,11 @@ html{--light-power:0;--scene-light:0}
   white-space:nowrap;
 }
 .retention-heart{
-  width:44px;
-  height:44px;
-  flex:0 0 44px;
+  width:45px;
+  height:45px;
+  flex:0 0 45px;
   overflow:visible;
-  transform-origin:50% 58%;
+  transform-origin:50% 50%;
   animation:retention-heartbeat 2.35s ease-in-out infinite;
 }
 @keyframes retention-heartbeat{
@@ -1237,7 +1237,7 @@ footer>p{color:#8d8882;font-size:11px;font-weight:600;line-height:1.5}
   .hero-capabilities .cap-card{min-height:142px}
   .hero-capabilities .cap-card small{font-size:13px;line-height:1.55}
   .score-label{font-size:15px!important}
-  .retention-heart{width:40px;height:40px;flex-basis:40px}
+  .retention-heart{width:36px;height:36px;flex-basis:36px}
   footer .brand b{font-size:20px}
   footer .brand small{font-size:13px}
   footer nav{font-size:14px}
