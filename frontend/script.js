@@ -39,16 +39,9 @@ const services = [
 ];
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const occasionalFlickerClasses = [
-  "flicker-quarter",
-  "flicker-three-quarter",
-  "flicker-blackout"
-];
-
 const bootIntro = document.querySelector("#bootIntro");
 const bootCurtain = document.querySelector("#bootCurtain");
 const bootMarkCover = document.querySelector("#bootMarkCover");
-const headerLight = document.querySelector(".light");
 const menuButton = document.querySelector(".menu");
 const navigation = document.querySelector("header nav");
 const serviceButtons = [...document.querySelectorAll("[data-service]")];
@@ -76,8 +69,6 @@ const contactForm = document.querySelector(".compose");
 const contactSubmitButton = contactForm?.querySelector('button[type="submit"]');
 const contactFormStatus = contactForm?.querySelector(".form-status");
 
-let occasionalFlickerTimer = 0;
-let heroStartFallbackTimer = 0;
 let startupUnlockFallbackTimer = 0;
 let servicesTypingStarted = false;
 let serviceCubeFrame = 0;
@@ -165,12 +156,6 @@ if (heroVideo && heroSection) {
   desktopHeroVideo.addEventListener("change", handleHeroVideoBreakpoint);
   prepareHeroVideo();
 }
-
-const setHeaderLightState = (className, enabled = true) => {
-  if (!headerLight) return;
-  headerLight.classList.toggle(className, enabled);
-  document.documentElement.classList.toggle(`light-${className}`, enabled);
-};
 
 const typeServicesHeading = () => {
   if (servicesTypingStarted || !servicesTypedText) return;
@@ -424,8 +409,6 @@ const unlockStartup = () => {
 const revealHero = () => {
   startHeroVideo();
   if (document.documentElement.classList.contains("hero-ready")) return;
-  window.clearTimeout(heroStartFallbackTimer);
-
   if (reducedMotion.matches || heroRevealItems.length === 0) {
     document.documentElement.classList.remove("hero-pending");
     document.documentElement.classList.add("hero-ready");
@@ -448,40 +431,6 @@ const revealHero = () => {
   document.documentElement.classList.add("hero-ready");
   startupUnlockFallbackTimer = window.setTimeout(unlockStartup, 2500);
 };
-
-const scheduleOccasionalFlicker = (delay = 5000 + Math.random() * 6000) => {
-  if (!headerLight || reducedMotion.matches) return;
-
-  window.clearTimeout(occasionalFlickerTimer);
-  occasionalFlickerTimer = window.setTimeout(() => {
-    const flickerClass = occasionalFlickerClasses[
-      Math.floor(Math.random() * occasionalFlickerClasses.length)
-    ];
-    setHeaderLightState(flickerClass);
-  }, delay);
-};
-
-if (headerLight) {
-  document.documentElement.addEventListener("animationend", (event) => {
-    if (event.target !== document.documentElement) return;
-
-    if (event.animationName === "warehouse-light-boot") {
-      setHeaderLightState("booting", false);
-      setHeaderLightState("is-lit");
-      scheduleOccasionalFlicker(3500);
-      return;
-    }
-
-    const completedFlicker = occasionalFlickerClasses.find((className) =>
-      headerLight.classList.contains(className)
-    );
-
-    if (completedFlicker) {
-      setHeaderLightState(completedFlicker, false);
-      scheduleOccasionalFlicker();
-    }
-  });
-}
 
 if (bootIntro) {
   let introComplete = false;
@@ -512,14 +461,7 @@ if (bootIntro) {
     if (introComplete) return;
     introComplete = true;
     bootIntro.remove();
-    if (reducedMotion.matches) {
-      setHeaderLightState("is-lit");
-      revealHero();
-    } else {
-      setHeaderLightState("booting");
-      revealHero();
-      heroStartFallbackTimer = window.setTimeout(revealHero, 3100);
-    }
+    revealHero();
   };
 
   const expandCutout = () => {
@@ -579,10 +521,6 @@ if (bootIntro) {
       window.setTimeout(finishIntro, 240);
     }
   });
-} else if (headerLight) {
-  setHeaderLightState("is-lit");
-  revealHero();
-  scheduleOccasionalFlicker();
 } else {
   revealHero();
 }
