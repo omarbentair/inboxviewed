@@ -63,7 +63,7 @@ No Node.js installation is needed.
 
 The project can be deployed as a static site through GitHub and Vercel:
 
-1. Put `index.html`, `style.css`, `script.js`, `README.md`, `Project_handoff.md.txt`, and `assets/` at the repository root.
+1. Put `index.html`, `style.css`, `script.js`, `README.md`, and `assets/` at the repository root.
 2. Push the repository to GitHub.
 3. Import the repository into Vercel.
 4. Use the default static deployment settings. No build command or output directory is required.
@@ -108,7 +108,7 @@ The inbox and email-client language should remain recognizable without making th
 - Interactive Services interface with five selectable services
 - Mac-style Services reader on desktop and mobile, with decorative reactive traffic-light controls
 - Rounded Services outer shell with sharp internal panes
-- Interactive Audit built around the supplied full-length retail email, rendered no wider than its native 585px source width and independently scrollable on desktop and mobile
+- Interactive Audit built around the supplied full-length 1375 x 4813 retail email and independently scrollable on desktop and mobile
 - Nine synchronized accordion findings: six image-anchored markers and three marker-free general observations, each with its own relevant email scroll destination
 - Two-way Audit navigation: image markers open the matching finding, while findings pan the email to the relevant region; approved issues `02`, `03`, `07`, and `08` retain focus zoom, while `05` and footer issue `09` use pan-only framing. Manual email scrolling clears any zoom before continuing.
 - Stable equal-height desktop Audit panes, a compact fixed findings panel dynamically sized once to the longest expanded issue with no independent scrollbar or expansion jump, and a restored reduced-motion-safe red scan line travelling down the email frame
@@ -116,6 +116,7 @@ The inbox and email-client language should remain recognizable without making th
 - Atomic Audit reveal, animated `42/100` score, one reference-matched Minecraft-style pixel heart beside the score with a subtle reduced-motion-safe beat, rounded outer shell, sharp internal panes, and no outer white halo
 - Interactive desktop founder photograph with hotspot-driven profile cards
 - Dedicated rounded founder cards on mobile, with the large Team photograph removed at phone widths
+- Mobile-only sticky desktop recommendation attached beneath the header, with a compact desktop-status chip and a restrained red fade into the page
 - About InboxViewed section
 - Mac-style compose contact form using FormSubmit AJAX
 - Rounded WhatsApp, Instagram, and LinkedIn contact cards with independent inset borders that remain intact around every corner
@@ -162,9 +163,9 @@ The form includes a honeypot field and displays its submission status without se
 Previous authoritative uploaded baseline SHA-256:
 
 ```text
-fb85366baeb419c3a2c3f6d20ef0cae736fceaa12f310d287f9f4498d7a21f4f
+1c219bfe917fdb30d0ac9fe29ae0eded24444a0f630617969fb45457bcc278ae
 ```
 
-This build keeps the approved desktop Hero background video and poster, plus the exact `5s-8s` and `12s-15s` left-copy clearance intervals on every loop. It keeps the header light/flicker system removed, preserves the approved Team photograph and founder mapping, and replaces the former four-point mock Audit with the supplied full bad-email example, nine complete findings, six image markers, synchronized scrolling, focus zoom, and desktop/mobile internal email scrolling.
+This build keeps the approved desktop Hero background video and poster, plus the exact `5s-8s` and `12s-15s` left-copy clearance intervals on every loop. It keeps the header light/flicker system removed, preserves the approved Team photograph and founder mapping, and retains the supplied high-resolution bad-email example with nine complete findings, six image markers, synchronized scrolling, focus zoom, and desktop/mobile internal email scrolling. On mobile only, a compact desktop-view recommendation follows directly beneath the sticky header.
 
 This README is the current continuation reference for the uploaded repository baseline.
