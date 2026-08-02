@@ -108,7 +108,11 @@ The inbox and email-client language should remain recognizable without making th
 - Interactive Services interface with five selectable services
 - Mac-style Services reader on desktop and mobile, with decorative reactive traffic-light controls
 - Rounded Services outer shell with sharp internal panes
-- Interactive Audit with four synchronized markers and findings
+- Interactive Audit built around the supplied full-length retail email, rendered no wider than its native 585px source width and independently scrollable on desktop and mobile
+- Nine synchronized accordion findings: six image-anchored markers and three marker-free general observations, each with its own relevant email scroll destination
+- Two-way Audit navigation: image markers open the matching finding, while findings pan the email to the relevant region; approved issues `02`, `03`, `07`, and `08` retain focus zoom, while `05` and footer issue `09` use pan-only framing. Manual email scrolling clears any zoom before continuing.
+- Stable equal-height desktop Audit panes, a compact fixed findings panel dynamically sized once to the longest expanded issue with no independent scrollbar or expansion jump, and a restored reduced-motion-safe red scan line travelling down the email frame
+- Audit panning is clamped to the real email image bounds: targets center when space permits, while the footer stops naturally at the lowest valid image position without artificial blank scroll space.
 - Atomic Audit reveal, animated `42/100` score, one reference-matched Minecraft-style pixel heart beside the score with a subtle reduced-motion-safe beat, rounded outer shell, sharp internal panes, and no outer white halo
 - Interactive desktop founder photograph with hotspot-driven profile cards
 - Dedicated rounded founder cards on mobile, with the large Team photograph removed at phone widths
@@ -118,7 +122,7 @@ The inbox and email-client language should remain recognizable without making th
 - Responsive desktop, tablet, and mobile rules
 - `prefers-reduced-motion` support
 
-The experimental `Unread -> Opened` section labels and Audit scan-line animation were tested and deliberately reverted. Do not reintroduce them unless explicitly requested.
+The experimental `Unread -> Opened` section labels remain reverted. The Audit scan-line animation has been restored at the user's request.
 
 ## Contact form
 
@@ -147,7 +151,7 @@ The form includes a honeypot field and displays its submission status without se
 - Preserve the left-copy clearance windows at exactly `5s-8s` and `12s-15s` on every video loop, plus the independent right-card clearance timing. Mobile must remain static and must not load the video.
 - Preserve the atomic Hero and Audit loading behavior so no empty white surface or empty shell appears before its content.
 - Preserve the Services tab behavior and the distinction between reveal state and active service state.
-- Preserve Audit marker-to-finding synchronization and element-anchored marker positioning.
+- Preserve the Audit's nine-finding order, six marker mappings, full-email scroll destinations, two-way synchronization, per-issue focus framing, native-resolution-safe image width, real-image scroll limits, fixed non-scrolling findings panel, stable pane heights, and zoom cancellation on manual scrolling.
 - Preserve the desktop Team hotspot controller and the separate mobile founder cards.
 - Respect `prefers-reduced-motion` for every new effect.
 - Do not add React, GSAP, or a build system for a small visual change.
@@ -161,6 +165,6 @@ Previous authoritative uploaded baseline SHA-256:
 fb85366baeb419c3a2c3f6d20ef0cae736fceaa12f310d287f9f4498d7a21f4f
 ```
 
-This build keeps the approved desktop Hero background video and poster, plus the exact `5s-8s` and `12s-15s` left-copy clearance intervals on every loop. It removes the former header light/flicker system, introduces the approved Team photograph on desktop with Riad mapped on the left and Omar mapped on the right, keeps only the founder cards on mobile, updates the requested Team/About copy, and preserves each social platform's colored border around the complete rounded card.
+This build keeps the approved desktop Hero background video and poster, plus the exact `5s-8s` and `12s-15s` left-copy clearance intervals on every loop. It keeps the header light/flicker system removed, preserves the approved Team photograph and founder mapping, and replaces the former four-point mock Audit with the supplied full bad-email example, nine complete findings, six image markers, synchronized scrolling, focus zoom, and desktop/mobile internal email scrolling.
 
 This README is the current continuation reference for the uploaded repository baseline.

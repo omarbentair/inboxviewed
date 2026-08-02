@@ -58,8 +58,12 @@ const serviceDetail = document.querySelector("#service-detail-panel");
 const serviceIcon = document.querySelector("#service-icon");
 const servicePoints = document.querySelector("#service-points");
 const auditSection = document.querySelector(".audit-section");
+const auditModule = document.querySelector(".audit");
+const auditNotes = auditModule?.querySelector(".notes");
 const auditScoreValue = document.querySelector("#auditScoreValue");
 const auditControls = [...document.querySelectorAll("[data-audit]")];
+const auditEmailViewport = document.querySelector("#auditEmailViewport");
+const auditEmailStage = document.querySelector("#auditEmailStage");
 const heroRevealItems = [...document.querySelectorAll(".hero-reveal")];
 const teamSection = document.querySelector(".team-section");
 const teamPhotoWrap = document.querySelector("#teamPhotoWrap");
@@ -586,12 +590,115 @@ serviceButtons.forEach((button, buttonIndex) => {
   });
 });
 
-auditControls.forEach((control) => {
-  control.addEventListener("click", () => {
-    const index = control.dataset.audit;
-    auditControls.forEach((item) => item.classList.toggle("active", item.dataset.audit === index));
+const clearAuditZoom = () => {
+  if (!auditEmailStage) return;
+  auditEmailStage.classList.remove("is-zoomed");
+  auditEmailStage.style.removeProperty("--focus-x");
+  auditEmailStage.style.removeProperty("--focus-y");
+  auditEmailStage.style.removeProperty("--focus-scale");
+};
+
+const scrollAuditEmailTo = (percent, behavior = "smooth") => {
+  if (!auditEmailViewport || !auditEmailStage) return;
+  const position = Number(percent);
+  if (!Number.isFinite(position)) return;
+  const stageTop = auditEmailStage.offsetTop;
+  const stageHeight = auditEmailStage.offsetHeight;
+  const imageBottom = stageTop + stageHeight;
+  const target = stageTop + (stageHeight * position / 100) - (auditEmailViewport.clientHeight / 2);
+  const maximum = Math.max(0, imageBottom - auditEmailViewport.clientHeight);
+  auditEmailViewport.scrollTo({
+    top: Math.max(0, Math.min(target, maximum)),
+    behavior: reducedMotion.matches ? "auto" : behavior,
   });
+};
+
+const activateAuditFinding = (control) => {
+  const index = control.dataset.audit;
+  const matchingPin = document.querySelector(`.audit-image-pin[data-audit="${index}"]`);
+  const matchingNote = document.querySelector(`.notes > button[data-audit="${index}"]`);
+  const scrollY = matchingNote?.dataset.scrollY || matchingPin?.dataset.focusY;
+
+  auditControls.forEach((item) => item.classList.toggle("active", item.dataset.audit === index));
+  scrollAuditEmailTo(scrollY);
+
+  if (matchingPin && auditEmailStage && matchingPin.dataset.panOnly !== "true") {
+    auditEmailStage.style.setProperty("--focus-x", `${matchingPin.dataset.focusX}%`);
+    auditEmailStage.style.setProperty("--focus-y", `${matchingPin.dataset.focusY}%`);
+    auditEmailStage.style.setProperty("--focus-scale", matchingPin.dataset.focusScale || "1.12");
+    window.requestAnimationFrame(() => auditEmailStage.classList.add("is-zoomed"));
+  } else {
+    clearAuditZoom();
+  }
+
+  if (control.classList.contains("audit-image-pin") && matchingNote) {
+    matchingNote.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block: "nearest" });
+  }
+};
+
+const syncAuditPaneHeight = () => {
+  if (!auditModule || !auditNotes) return;
+
+  const notesClone = auditNotes.cloneNode(true);
+  notesClone.setAttribute("aria-hidden", "true");
+  Object.assign(notesClone.style, {
+    position: "fixed",
+    left: "-100000px",
+    top: "0",
+    width: `${auditNotes.getBoundingClientRect().width}px`,
+    height: "auto",
+    minHeight: "0",
+    overflow: "visible",
+    visibility: "hidden",
+    pointerEvents: "none",
+  });
+
+  const cloneFindings = [...notesClone.querySelectorAll(":scope > button[data-audit]")];
+  notesClone.querySelectorAll(".audit-finding-copy").forEach((copy) => {
+    copy.style.transition = "none";
+  });
+  cloneFindings.forEach((finding) => finding.classList.remove("active"));
+  document.body.appendChild(notesClone);
+
+  let requiredHeight = notesClone.scrollHeight;
+  cloneFindings.forEach((finding) => {
+    cloneFindings.forEach((item) => item.classList.remove("active"));
+    finding.classList.add("active");
+    requiredHeight = Math.max(requiredHeight, notesClone.scrollHeight);
+  });
+
+  notesClone.remove();
+  const fittedHeight = `${Math.ceil(requiredHeight + 2)}px`;
+  auditModule.style.setProperty("--audit-findings-height", fittedHeight);
+
+  if (window.matchMedia("(min-width: 821px)").matches) {
+    auditModule.style.setProperty("--audit-pane-height", fittedHeight);
+  } else {
+    auditModule.style.removeProperty("--audit-pane-height");
+  }
+};
+
+let auditResizeFrame = 0;
+const scheduleAuditPaneHeight = () => {
+  window.cancelAnimationFrame(auditResizeFrame);
+  auditResizeFrame = window.requestAnimationFrame(syncAuditPaneHeight);
+};
+
+scheduleAuditPaneHeight();
+if (document.fonts?.ready) document.fonts.ready.then(scheduleAuditPaneHeight);
+window.addEventListener("resize", scheduleAuditPaneHeight, { passive: true });
+
+auditControls.forEach((control) => {
+  control.addEventListener("click", () => activateAuditFinding(control));
 });
+
+if (auditEmailViewport) {
+  auditEmailViewport.addEventListener("wheel", clearAuditZoom, { passive: true });
+  auditEmailViewport.addEventListener("touchmove", clearAuditZoom, { passive: true });
+  auditEmailViewport.addEventListener("keydown", (event) => {
+    if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(event.key)) clearAuditZoom();
+  });
+}
 
 const countAuditScore = () => {
   if (!auditScoreValue || auditRevealStarted) return;
