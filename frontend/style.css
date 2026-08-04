@@ -1470,7 +1470,8 @@ footer>p{color:#8d8882;font-size:11px;font-weight:600;line-height:1.5}
 .privacy-choices:hover,.privacy-choices:focus-visible{color:#fff;outline:0}
 .analytics-consent{position:fixed;z-index:99998;left:50%;bottom:22px;width:min(920px,calc(100% - 44px));padding:22px;display:grid;grid-template-columns:58px minmax(0,1fr) auto;align-items:center;gap:20px;border:1px solid #5c1515;background:linear-gradient(110deg,#1d0505,#090909 46%);box-shadow:0 24px 70px #000c,0 0 32px #90000024;transform:translate(-50%,0)}
 .analytics-consent[hidden]{display:none}
-.analytics-consent-mark{width:58px;height:58px;display:grid;place-items:center;border:1px solid #8d1515;background:#900000;color:#fff;font:700 19px var(--display);letter-spacing:-.04em}
+.analytics-consent-mark{width:58px;height:58px;display:grid;place-items:center;border:1px solid #8d1515;background:#900000;overflow:hidden}
+.analytics-consent-mark img{display:block;width:100%;height:100%;object-fit:cover}
 .analytics-consent-copy small{display:block;margin-bottom:7px;color:#cf2020;font:9px var(--mono);letter-spacing:.14em;text-transform:uppercase}
 .analytics-consent-copy h2{margin:0;color:#f3f0ec;font-size:21px;line-height:1.1;letter-spacing:-.025em}
 .analytics-consent-copy p{max-width:620px;margin:8px 0 0;color:#aaa49e;font-size:12px;line-height:1.55}

@@ -149,7 +149,7 @@ The form includes a honeypot field, bounded input lengths, browser-native validi
 
 `vercel.json` applies the production security policy. Keep it at the repository root when deploying to Vercel. The policy deliberately permits only the existing local assets and scripts, Google Fonts, and the FormSubmit endpoint. If a new external script, analytics provider, font host, API, embedded frame, or form destination is introduced later, review and update the policy deliberately rather than weakening it globally.
 
-Google Analytics 4 is connected through Measurement ID `G-D8FFDHV665` with consent-first loading. All Google consent categories default to denied, the Google tag is not requested until the visitor explicitly accepts analytics, and the decision is remembered locally. Visitors can reopen the choice through the footer. A successful contact-form submission records the standard `generate_lead` event without sending form contents or personally identifiable information.
+Google Analytics 4 is connected through Measurement ID `G-D8FFDHV665` with consent-first loading. All Google consent categories default to denied, the Google tag is not requested until the visitor explicitly accepts analytics, and the decision is remembered locally. Visitors can reopen the choice through the footer. The consent panel uses the official InboxViewed X mark and clearly explains the practical benefit of analytics without weakening the decline option. A successful contact-form submission records the standard `generate_lead` event without sending form contents or personally identifiable information.
 
 ## Editing rules
 
