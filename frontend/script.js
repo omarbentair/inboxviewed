@@ -1,5 +1,21 @@
 "use strict";
 
+const GA_MEASUREMENT_ID = "G-D8FFDHV665";
+const ANALYTICS_CONSENT_KEY = "inboxviewed.analytics-consent.v1";
+
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function gtag() {
+  window.dataLayer.push(arguments);
+};
+
+window.gtag("consent", "default", {
+  ad_storage: "denied",
+  analytics_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied"
+});
+window.gtag("set", "ads_data_redaction", true);
+
 const services = [
   {
     icon: '<path d="M4 20 8.8 18.8 19 8.6a2.1 2.1 0 0 0 0-3L18.4 5a2.1 2.1 0 0 0-3 0L5.2 15.2 4 20Z"></path><path d="m13.8 6.6 3.6 3.6M5.2 15.2l3.6 3.6"></path>',
@@ -72,12 +88,117 @@ const contactSection = document.querySelector(".contact");
 const contactForm = document.querySelector(".compose");
 const contactSubmitButton = contactForm?.querySelector('button[type="submit"]');
 const contactFormStatus = contactForm?.querySelector(".form-status");
+const analyticsConsent = document.querySelector("[data-analytics-consent]");
+const analyticsConsentButtons = [...document.querySelectorAll("[data-consent-choice]")];
+const analyticsSettingsButtons = [...document.querySelectorAll("[data-consent-settings]")];
 
 let startupUnlockFallbackTimer = 0;
 let servicesTypingStarted = false;
 let serviceCubeFrame = 0;
 let heroCubeFrame = 0;
 let heroVideoFrame = 0;
+let analyticsLoaded = false;
+
+function readAnalyticsConsent() {
+  try {
+    const value = window.localStorage.getItem(ANALYTICS_CONSENT_KEY);
+    return value === "accepted" || value === "declined" ? value : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function storeAnalyticsConsent(value) {
+  try {
+    window.localStorage.setItem(ANALYTICS_CONSENT_KEY, value);
+  } catch (error) {
+    // The choice still applies for this page when browser storage is unavailable.
+  }
+}
+
+function clearAnalyticsCookies() {
+  document.cookie.split(";").forEach((cookie) => {
+    const name = cookie.split("=")[0].trim();
+    if (!name.startsWith("_ga")) return;
+
+    document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
+    document.cookie = `${name}=; Max-Age=0; path=/; domain=.inboxviewed.com; SameSite=Lax`;
+  });
+}
+
+function loadGoogleAnalytics() {
+  if (analyticsLoaded) return;
+
+  analyticsLoaded = true;
+  window.gtag("consent", "update", {
+    ad_storage: "denied",
+    analytics_storage: "granted",
+    ad_user_data: "denied",
+    ad_personalization: "denied"
+  });
+  window.gtag("js", new Date());
+  window.gtag("config", GA_MEASUREMENT_ID, {
+    anonymize_ip: true,
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false
+  });
+
+  const analyticsScript = document.createElement("script");
+  analyticsScript.async = true;
+  analyticsScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`;
+  analyticsScript.dataset.googleAnalytics = "true";
+  document.head.append(analyticsScript);
+}
+
+function showAnalyticsConsent() {
+  if (!analyticsConsent) return;
+  analyticsConsent.hidden = false;
+  analyticsConsent.querySelector("button")?.focus({ preventScroll: true });
+}
+
+function hideAnalyticsConsent() {
+  if (analyticsConsent) analyticsConsent.hidden = true;
+}
+
+function applyAnalyticsConsent(value) {
+  storeAnalyticsConsent(value);
+
+  if (value === "accepted") {
+    loadGoogleAnalytics();
+    hideAnalyticsConsent();
+    return;
+  }
+
+  clearAnalyticsCookies();
+  hideAnalyticsConsent();
+
+  if (analyticsLoaded) {
+    window.location.reload();
+  } else {
+    window.gtag("consent", "update", {
+      ad_storage: "denied",
+      analytics_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied"
+    });
+  }
+}
+
+const savedAnalyticsConsent = readAnalyticsConsent();
+
+if (savedAnalyticsConsent === "accepted") {
+  loadGoogleAnalytics();
+} else if (!savedAnalyticsConsent) {
+  showAnalyticsConsent();
+}
+
+analyticsConsentButtons.forEach((button) => {
+  button.addEventListener("click", () => applyAnalyticsConsent(button.dataset.consentChoice));
+});
+
+analyticsSettingsButtons.forEach((button) => {
+  button.addEventListener("click", showAnalyticsConsent);
+});
 let heroVideoStarted = false;
 let auditRevealStarted = false;
 
@@ -925,7 +1046,11 @@ if (contactForm && contactSubmitButton && contactFormStatus) {
   contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
+    if (!contactForm.reportValidity()) return;
+
     const originalButtonText = contactSubmitButton.textContent;
+    const requestController = new AbortController();
+    const requestTimeout = window.setTimeout(() => requestController.abort(), 15000);
     contactSubmitButton.disabled = true;
     contactSubmitButton.textContent = "Sending...";
     contactFormStatus.textContent = "Sending securely";
@@ -935,7 +1060,10 @@ if (contactForm && contactSubmitButton && contactFormStatus) {
       const response = await fetch(contactForm.action, {
         method: "POST",
         body: new FormData(contactForm),
-        headers: { Accept: "application/json" }
+        headers: { Accept: "application/json" },
+        credentials: "omit",
+        referrerPolicy: "strict-origin-when-cross-origin",
+        signal: requestController.signal
       });
       const result = await response.json();
       const sent = response.ok && (result.success === true || result.success === "true");
@@ -945,10 +1073,14 @@ if (contactForm && contactSubmitButton && contactFormStatus) {
       contactForm.reset();
       contactFormStatus.textContent = "Inquiry sent - we'll reply by email";
       contactFormStatus.classList.add("success");
+      if (analyticsLoaded) {
+        window.gtag("event", "generate_lead", { method: "contact_form" });
+      }
     } catch (error) {
       contactFormStatus.textContent = "Could not send - please try again";
       contactFormStatus.classList.add("error");
     } finally {
+      window.clearTimeout(requestTimeout);
       contactSubmitButton.disabled = false;
       contactSubmitButton.textContent = originalButtonText;
     }

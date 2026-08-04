@@ -318,7 +318,7 @@ The whole system.</span><span class="service-type-cursor" aria-hidden="true">█
       </div>
 
       <div class="contact-layout">
-        <form class="compose" action="https://formsubmit.co/ajax/contact@inboxviewed.com" method="POST">
+        <form class="compose" action="https://formsubmit.co/ajax/contact@inboxviewed.com" method="POST" accept-charset="UTF-8">
           <div class="compose-bar">
             <span class="compose-window-controls" aria-hidden="true"><i></i><i></i><i></i></span>
             <span class="compose-window-title">InboxViewed / New inquiry</span>
@@ -326,13 +326,13 @@ The whole system.</span><span class="service-type-cursor" aria-hidden="true">█
           </div>
           <input type="hidden" name="_subject" value="New InboxViewed website inquiry">
           <input type="hidden" name="_template" value="table">
-          <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="form-honeypot">
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="form-honeypot" maxlength="200">
           <label><span>To</span><b>InboxViewed &lt;contact@inboxviewed.com&gt;</b></label>
-          <label><span>Name</span><input name="name" autocomplete="name" required placeholder="Your name"></label>
-          <label><span>From</span><input type="email" name="email" autocomplete="email" required placeholder="you@yourbrand.com"></label>
-          <label><span>Brand</span><input name="company" autocomplete="organization" required placeholder="Your company or brand"></label>
-          <label><span>Subject</span><input name="subject" required placeholder="What are we building?"></label>
-          <label class="message"><span>Message</span><textarea name="message" required placeholder="Tell us about your brand, your current email setup, and what needs to change."></textarea></label>
+          <label><span>Name</span><input name="name" autocomplete="name" required minlength="2" maxlength="100" placeholder="Your name"></label>
+          <label><span>From</span><input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@yourbrand.com"></label>
+          <label><span>Brand</span><input name="company" autocomplete="organization" required minlength="2" maxlength="120" placeholder="Your company or brand"></label>
+          <label><span>Subject</span><input name="subject" required minlength="3" maxlength="160" placeholder="What are we building?"></label>
+          <label class="message"><span>Message</span><textarea name="message" required minlength="20" maxlength="3000" placeholder="Tell us about your brand, your current email setup, and what needs to change."></textarea></label>
           <div class="send">
             <button type="submit">Send inquiry ↗</button>
             <small class="form-status" role="status" aria-live="polite"></small>
@@ -369,9 +369,22 @@ The whole system.</span><span class="service-type-cursor" aria-hidden="true">█
       <div><b>InboxViewed</b><small>Delivered means nothing. Viewed means something.</small></div>
     </div>
     <nav aria-label="Footer navigation">
-      <a href="#services">Services</a><a href="#audit">Audit</a><a href="#team">Team</a><a href="#about">About</a><a href="#contact">Contact</a>
+      <a href="#services">Services</a><a href="#audit">Audit</a><a href="#team">Team</a><a href="#about">About</a><a href="#contact">Contact</a><button class="privacy-choices" type="button" data-consent-settings>Privacy choices</button>
     </nav>
     <p>© 2026 InboxViewed. All rights reserved.</p>
   </footer>
+
+  <section class="analytics-consent" data-analytics-consent hidden role="dialog" aria-labelledby="analytics-consent-title" aria-describedby="analytics-consent-copy">
+    <div class="analytics-consent-mark" aria-hidden="true">IV</div>
+    <div class="analytics-consent-copy">
+      <small>Optional analytics</small>
+      <h2 id="analytics-consent-title">Help us understand what gets viewed.</h2>
+      <p id="analytics-consent-copy">With your permission, we use Google Analytics to measure visits and improve the website. It stays completely off unless you accept. You can change this choice at any time.</p>
+    </div>
+    <div class="analytics-consent-actions">
+      <button type="button" data-consent-choice="declined">Decline</button>
+      <button type="button" data-consent-choice="accepted">Accept analytics</button>
+    </div>
+  </section>
 </body>
 </html>

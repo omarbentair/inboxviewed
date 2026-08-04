@@ -119,6 +119,9 @@ The inbox and email-client language should remain recognizable without making th
 - Mobile-only sticky desktop recommendation attached beneath the header, with a compact desktop-status chip and a restrained red fade into the page
 - About InboxViewed section
 - Mac-style compose contact form using FormSubmit AJAX
+- Vercel security headers with a restrictive site-specific Content Security Policy, clickjacking protection, MIME-sniffing protection, strict referrer handling, and unnecessary browser capabilities disabled
+- Contact-form length limits, native validity checks, credential-free cross-origin submission, and a 15-second request timeout
+- Public audit imagery stripped of embedded author and Canva/XMP identifiers without changing its rendered pixels
 - Rounded WhatsApp, Instagram, and LinkedIn contact cards with independent inset borders that remain intact around every corner
 - Responsive desktop, tablet, and mobile rules
 - `prefers-reduced-motion` support
@@ -140,7 +143,13 @@ Before launch or after changing the deployment domain:
 3. Confirm the destination.
 4. Submit a second test and verify that the message arrives correctly.
 
-The form includes a honeypot field and displays its submission status without sending the visitor away from the website.
+The form includes a honeypot field, bounded input lengths, browser-native validity checks, a request timeout, and in-page submission status without sending the visitor away from the website. FormSubmit's CAPTCHA remains enabled by default.
+
+## Security and deployment headers
+
+`vercel.json` applies the production security policy. Keep it at the repository root when deploying to Vercel. The policy deliberately permits only the existing local assets and scripts, Google Fonts, and the FormSubmit endpoint. If a new external script, analytics provider, font host, API, embedded frame, or form destination is introduced later, review and update the policy deliberately rather than weakening it globally.
+
+Google Analytics 4 is connected through Measurement ID `G-D8FFDHV665` with consent-first loading. All Google consent categories default to denied, the Google tag is not requested until the visitor explicitly accepts analytics, and the decision is remembered locally. Visitors can reopen the choice through the footer. A successful contact-form submission records the standard `generate_lead` event without sending form contents or personally identifiable information.
 
 ## Editing rules
 
@@ -158,14 +167,16 @@ The form includes a honeypot field and displays its submission status without se
 - Do not add React, GSAP, or a build system for a small visual change.
 - Test desktop, tablet, and mobile after responsive CSS changes.
 
-## Current baseline
+## Current secured baseline
 
-Previous authoritative uploaded baseline SHA-256:
+Source archive used for this hardening pass, SHA-256:
 
 ```text
-1c219bfe917fdb30d0ac9fe29ae0eded24444a0f630617969fb45457bcc278ae
+d7805a48633d157a497f008e87f7cf03d6c301c4397f9baca48732c07ebbc5b0
 ```
 
 This build keeps the approved desktop Hero background video and poster, plus the exact `5s-8s` and `12s-15s` left-copy clearance intervals on every loop. It keeps the header light/flicker system removed, preserves the approved Team photograph and founder mapping, and retains the supplied high-resolution bad-email example with nine complete findings, six image markers, synchronized scrolling, focus zoom, and desktop/mobile internal email scrolling. On mobile only, a compact desktop-view recommendation follows directly beneath the sticky header.
 
-This README is the current continuation reference for the uploaded repository baseline.
+This build keeps the security hardening and adds consent-first Google Analytics 4, a responsive analytics choice panel, persistent privacy controls, CSP permissions limited to the required Google endpoints, and privacy-safe `generate_lead` measurement for successful inquiries.
+
+This README is the current continuation reference for the secured repository baseline.
